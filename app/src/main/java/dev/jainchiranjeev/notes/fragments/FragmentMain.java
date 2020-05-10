@@ -1,5 +1,6 @@
 package dev.jainchiranjeev.notes.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -10,6 +11,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -20,14 +23,27 @@ import dev.jainchiranjeev.notes.databinding.FragmentMainBinding;
 public class FragmentMain extends Fragment {
 
     View view;
+    Context context;
     FragmentMainBinding binding;
     BottomNavigationView bottomNavigationView;
+    FragmentManager manager;
+    FragmentTransaction transaction;
+    FragmentNotes fragmentNotes;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentMainBinding.inflate(getLayoutInflater(), container, false);
         view = binding.getRoot();
+
+        context = getContext();
+
+        fragmentNotes = new FragmentNotes();
+
+        manager = getFragmentManager();
+        transaction = manager.beginTransaction();
+        transaction.replace(binding.flMainFragment.getId(), fragmentNotes);
+        transaction.commit();
 
 //        View Bindings
         bottomNavigationView = binding.bnvFragmentMain;
@@ -37,7 +53,9 @@ public class FragmentMain extends Fragment {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.menu_item_notes:
-                        Snackbar.make(binding.snackbarMainFragment, "Notes", Snackbar.LENGTH_SHORT).show();
+                        transaction = manager.beginTransaction();
+                        transaction.replace(binding.flMainFragment.getId(), fragmentNotes);
+                        transaction.commit();
                         return true;
                     case R.id.menu_item_books:
                         Snackbar.make(binding.snackbarMainFragment, "Books", Snackbar.LENGTH_SHORT).show();
