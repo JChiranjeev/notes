@@ -5,4 +5,6 @@
     <color name="colorAccent">#303030</color>
     <color name="gradientStart">#151515</color>
     <color name="gradientEnd">#101010</color>
+    <color name="contrastPrimary">@color/md_white_1000</color>
+    <color name="contrastSecondary">@color/md_grey_200</color>
 </resources>
