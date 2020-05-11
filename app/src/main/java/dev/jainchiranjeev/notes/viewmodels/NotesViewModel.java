@@ -16,6 +16,7 @@ import dev.jainchiranjeev.notes.models.NoteModel;
 public class NotesViewModel extends AndroidViewModel {
     AllNotesLiveData allNotesLiveData;
     AddNoteLiveData addNoteLiveData;
+    NoteByIdLiveData noteByIdLiveData;
     public NotesViewModel(@NonNull Application application) {
         super(application);
     }
@@ -30,6 +31,10 @@ public class NotesViewModel extends AndroidViewModel {
         return addNoteLiveData;
     }
 
+    public LiveData<NoteModel> getNoteById(Context context, int noteId) {
+        noteByIdLiveData = new NoteByIdLiveData(context, noteId);
+        return noteByIdLiveData;
+    }
 }
 
 class AllNotesLiveData extends LiveData<List<NoteModel>> {
@@ -101,4 +106,42 @@ class AddNoteLiveData extends LiveData<Boolean> {
             }
         }.execute(note);
     }
+}
+
+class NoteByIdLiveData extends LiveData<NoteModel> {
+    private final Context context;
+
+    NoteByIdLiveData(Context context, int noteId) {
+        this.context = context;
+        loadData(noteId);
+    }
+
+    @Override
+    protected void postValue(NoteModel value) {
+        super.postValue(value);
+    }
+
+    @Override
+    protected void setValue(NoteModel value) {
+        super.setValue(value);
+    }
+
+    private void loadData(int noteId) {
+        new AsyncTask<Integer, Void, NoteModel>() {
+
+            @Override
+            protected NoteModel doInBackground(Integer... integers) {
+                NotesDB notesDB = NotesDB.getInstance(context);
+                NoteModel note = notesDB.notesDAO().getNoteById(noteId);
+                return note;
+            }
+
+            @Override
+            protected void onPostExecute(NoteModel noteModel) {
+                super.onPostExecute(noteModel);
+                setValue(noteModel);
+            }
+        }.execute(noteId);
+    }
+
 }

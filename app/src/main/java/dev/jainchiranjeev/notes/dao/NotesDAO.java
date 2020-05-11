@@ -20,4 +20,6 @@ public interface NotesDAO {
     void updateNote(NoteModel note);
     @Delete
     void deleteNote(NoteModel note);
+    @Query("SELECT * FROM table_notes WHERE noteId =:id")
+    NoteModel getNoteById(int id);
 }

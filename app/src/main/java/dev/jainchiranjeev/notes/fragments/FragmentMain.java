@@ -3,7 +3,6 @@ package dev.jainchiranjeev.notes.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +27,7 @@ public class FragmentMain extends Fragment {
     BottomNavigationView bottomNavigationView;
     FragmentManager manager;
     FragmentTransaction transaction;
-    FragmentNotes fragmentNotes;
+    FragmentAllNotes fragmentAllNotes;
 
     @Nullable
     @Override
@@ -38,13 +37,13 @@ public class FragmentMain extends Fragment {
 
         context = getContext();
 
-        fragmentNotes = new FragmentNotes();
+        fragmentAllNotes = new FragmentAllNotes();
 
         manager = getFragmentManager();
         transaction = manager.beginTransaction();
-        transaction.replace(binding.crflMainFragment.getId(), fragmentNotes);
+        transaction.replace(binding.crflMainFragment.getId(), fragmentAllNotes);
         transaction.commit();
-        fragmentNotes = null;
+        fragmentAllNotes = null;
         manager = null;
 
 //        View Bindings
@@ -55,10 +54,10 @@ public class FragmentMain extends Fragment {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.menu_item_notes:
-                        fragmentNotes = new FragmentNotes();
+                        fragmentAllNotes = new FragmentAllNotes();
                         manager = getFragmentManager();
                         transaction = manager.beginTransaction();
-                        transaction.replace(binding.crflMainFragment.getId(), fragmentNotes);
+                        transaction.replace(binding.crflMainFragment.getId(), fragmentAllNotes);
                         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                         transaction.commit();
                         return true;

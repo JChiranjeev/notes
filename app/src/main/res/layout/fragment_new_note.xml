@@ -49,7 +49,7 @@
         android:inputType="textMultiLine"
         android:ellipsize="end"
         android:textCursorDrawable="@null"
-        android:id="@+id/et_note_note_content"
+        android:id="@+id/et_note_content"
         android:padding="16dp"
         style="@style/FontRalewayRegular"
         android:gravity="top|start"/>

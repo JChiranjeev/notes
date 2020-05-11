@@ -13,23 +13,22 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
-import java.time.LocalDateTime;
 import java.util.Calendar;
-import java.util.Date;
 
 import dev.jainchiranjeev.notes.R;
-import dev.jainchiranjeev.notes.dao.NotesDB;
 import dev.jainchiranjeev.notes.databinding.FragmentNewNoteBinding;
 import dev.jainchiranjeev.notes.models.NoteModel;
 import dev.jainchiranjeev.notes.viewmodels.NotesViewModel;
 
-public class FragmentNewNote extends Fragment implements View.OnClickListener {
+public class FragmentNoteEditor extends Fragment implements View.OnClickListener {
 
     View view;
     FragmentNewNoteBinding binding;
     FragmentManager manager;
     Context context;
     NotesViewModel notesViewModel;
+    Boolean isNewNote;
+    Bundle bundle;
 
     @Nullable
     @Override
@@ -39,17 +38,34 @@ public class FragmentNewNote extends Fragment implements View.OnClickListener {
         context = getContext();
         manager = getFragmentManager();
 
-        binding.etNoteNoteContent.requestFocus();
+        bundle = this.getArguments();
+        if(bundle != null) {
+            isNewNote = bundle.getBoolean("IsNewNote");
+            if(!isNewNote) {
+                int noteId = bundle.getInt("NoteID",0);
+                loadNote(noteId);
+            }
+        }
+
+        binding.etNoteContent.requestFocus();
 
         binding.fabSaveNote.setOnClickListener(this);
 
         return view;
     }
 
+    private void loadNote(int noteId) {
+        NoteModel note = null;
+        notesViewModel = ViewModelProviders.of(this).get(NotesViewModel.class);
+        notesViewModel.getNoteById(context, noteId).observe(this, data -> {
+            binding.etNoteTitle.setText(data.noteTitle);
+            binding.etNoteContent.setText(data.noteContent);
+        });
+    }
+
     @Override
     public void onStop() {
         super.onStop();
-
     }
 
     @Override
@@ -59,7 +75,7 @@ public class FragmentNewNote extends Fragment implements View.OnClickListener {
                 String noteTitle,noteContent,color;
                 long creationDate, modificationDate;
                 noteTitle = binding.etNoteTitle.getText().toString();
-                noteContent = binding.etNoteNoteContent.getText().toString();
+                noteContent = binding.etNoteContent.getText().toString();
                 color = null;
                 creationDate = Calendar.getInstance().getTimeInMillis();
                 modificationDate = Calendar.getInstance().getTimeInMillis();
