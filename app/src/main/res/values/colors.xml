@@ -3,8 +3,9 @@
     <color name="colorPrimary">#FFFFFF</color>
     <color name="colorPrimaryDark">#EFEFEF</color>
     <color name="colorAccent">#EFEFEF</color>
-    <color name="gradientStart">#F0F5FF</color>
-    <color name="gradientEnd">#EDF3FF</color>
+    <color name="gradientStart">#FFFFFF</color>
+    <color name="gradientEnd">#EFEFEF</color>
+    <color name="edittext">#05000000</color>
     <color name="contrastPrimary">@color/md_black_1000</color>
     <color name="contrastSecondary">@color/md_grey_700</color>
 </resources>

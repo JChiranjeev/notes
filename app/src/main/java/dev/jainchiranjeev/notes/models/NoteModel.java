@@ -10,11 +10,10 @@ public class NoteModel {
     @PrimaryKey(autoGenerate = true)
     public int noteId;
     public String noteTitle,noteContent;
-    public float creationDate,modificationDate;
+    public long creationDate,modificationDate;
     public String color;
 
-    public NoteModel(int noteId, String noteTitle, String noteContent, float creationDate, float modificationDate, String color) {
-        this.noteId = noteId;
+    public NoteModel(String noteTitle, String noteContent, long creationDate, long modificationDate, String color) {
         this.noteTitle = noteTitle;
         this.noteContent = noteContent;
         this.creationDate = creationDate;

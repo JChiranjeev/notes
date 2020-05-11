@@ -10,13 +10,6 @@
     <com.google.android.material.circularreveal.CircularRevealFrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/crfl_main_activity">
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/fl_main_activity"/>
-
-    </com.google.android.material.circularreveal.CircularRevealFrameLayout>
+        android:id="@+id/crfl_main_activity"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

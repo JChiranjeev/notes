@@ -7,8 +7,7 @@
     <com.google.android.material.circularreveal.CircularRevealFrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/fl_main_fragment"
-        android:paddingBottom="80dp"
+        android:id="@+id/crfl_main_fragment"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 

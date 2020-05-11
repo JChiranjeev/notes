@@ -12,7 +12,7 @@ import androidx.sqlite.db.SupportSQLiteOpenHelper;
 
 import dev.jainchiranjeev.notes.models.NoteModel;
 
-@Database(entities = NoteModel.class, exportSchema = true, version = 1)
+@Database(entities = NoteModel.class, exportSchema = false, version = 1)
 public abstract class NotesDB extends RoomDatabase {
 
     private static final String DB_NAME = "db_notes";

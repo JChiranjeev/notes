@@ -42,8 +42,10 @@ public class FragmentMain extends Fragment {
 
         manager = getFragmentManager();
         transaction = manager.beginTransaction();
-        transaction.replace(binding.flMainFragment.getId(), fragmentNotes);
+        transaction.replace(binding.crflMainFragment.getId(), fragmentNotes);
         transaction.commit();
+        fragmentNotes = null;
+        manager = null;
 
 //        View Bindings
         bottomNavigationView = binding.bnvFragmentMain;
@@ -53,12 +55,15 @@ public class FragmentMain extends Fragment {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.menu_item_notes:
+                        fragmentNotes = new FragmentNotes();
+                        manager = getFragmentManager();
                         transaction = manager.beginTransaction();
-                        transaction.replace(binding.flMainFragment.getId(), fragmentNotes);
+                        transaction.replace(binding.crflMainFragment.getId(), fragmentNotes);
+                        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                         transaction.commit();
                         return true;
                     case R.id.menu_item_books:
-                        Snackbar.make(binding.snackbarMainFragment, "Books", Snackbar.LENGTH_SHORT).show();
+                        Snackbar.make(binding.snackbarMainFragment, "Notes", Snackbar.LENGTH_SHORT).show();
                         return true;
                     case R.id.menu_item_journal:
                         Snackbar.make(binding.snackbarMainFragment, "Journal", Snackbar.LENGTH_SHORT).show();

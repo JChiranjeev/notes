@@ -2,6 +2,7 @@ package dev.jainchiranjeev.notes;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -9,6 +10,11 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
+
+import com.google.android.material.snackbar.Snackbar;
+
+import java.util.List;
 
 import dev.jainchiranjeev.notes.databinding.ActivityMainBinding;
 import dev.jainchiranjeev.notes.fragments.FragmentMain;
@@ -38,10 +44,10 @@ public class MainActivity extends AppCompatActivity {
         FragmentMain fragmentMain = new FragmentMain();
         manager = getSupportFragmentManager();
         transaction = manager.beginTransaction();
-        transaction.setCustomAnimations(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
-        transaction.replace(binding.flMainActivity.getId(), fragmentMain);
-        transaction.addToBackStack(null);
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        transaction.replace(binding.crflMainActivity.getId(), fragmentMain);
         transaction.commit();
+
     }
 
     @Override
