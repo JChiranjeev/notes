@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="4dp"
+    android:background="@drawable/bg_note_preview"
+    android:padding="8dp">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_note_preview_title"
+        android:text="Note Title"
+        android:padding="4dp"
+        android:textSize="16sp"
+        style="@style/FontRalewayBold"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_note_preview_content"
+        android:text="Note Content Hello World\nHelloWorld"
+        android:padding="4dp"
+        android:textSize="14sp"
+        style="@style/FontRalewaySemiBold"
+        app:lineHeight="20sp"
+        android:maxLines="5"
+        android:ellipsize="end"
+        app:layout_constraintTop_toBottomOf="@id/tv_note_preview_title"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_note_preview_modified"
+        android:text="1/1/2000 00:00"
+        android:padding="4dp"
+        style="@style/FontRalewayRegular"
+        android:maxLines="5"
+        android:ellipsize="end"
+        android:textSize="12sp"
+        android:gravity="end"
+        app:layout_constraintTop_toBottomOf="@id/tv_note_preview_content"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

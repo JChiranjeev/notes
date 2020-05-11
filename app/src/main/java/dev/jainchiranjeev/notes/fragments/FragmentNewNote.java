@@ -65,7 +65,7 @@ public class FragmentNewNote extends Fragment implements View.OnClickListener {
                 modificationDate = Calendar.getInstance().getTimeInMillis();
                 if(!noteContent.equals(null) && noteContent.length() > 0) {
                     notesViewModel = ViewModelProviders.of(this).get(NotesViewModel.class);
-                    notesViewModel.addNewNote(context, new NoteModel(noteTitle, noteContent, creationDate, modificationDate, color)).observe(this, data -> {
+                    notesViewModel.addNewNote(context, new NoteModel(noteTitle, noteContent, creationDate, modificationDate, color, false)).observe(this, data -> {
                         Log.i("Note Added", data.toString());
                     });
                 }

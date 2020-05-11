@@ -13,6 +13,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import java.util.List;
 
@@ -20,6 +22,7 @@ import dev.jainchiranjeev.notes.R;
 import dev.jainchiranjeev.notes.dao.NotesDB;
 import dev.jainchiranjeev.notes.databinding.FragmentNotesBinding;
 import dev.jainchiranjeev.notes.models.NoteModel;
+import dev.jainchiranjeev.notes.presenter.NotesAdapter;
 import dev.jainchiranjeev.notes.viewmodels.NotesViewModel;
 
 public class FragmentNotes extends Fragment implements View.OnClickListener {
@@ -57,8 +60,14 @@ public class FragmentNotes extends Fragment implements View.OnClickListener {
     }
 
     private void handleNotes(List<NoteModel> notesList) {
-        Log.i("Notes",notesList.toString());
-        Log.i("Notes",notesList.get(notesList.size() -1).noteContent);
+        if (notesList == null || notesList.size() < 1) {
+            
+        } else {
+            Log.i("Notes",notesList.get(notesList.size() - 1).noteContent);
+            NotesAdapter notesAdapter = new NotesAdapter(context, notesList);
+            binding.rvNotes.setAdapter(notesAdapter);
+            binding.rvNotes.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        }
     }
 
     @Override

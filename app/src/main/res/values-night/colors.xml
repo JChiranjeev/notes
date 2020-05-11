@@ -8,4 +8,7 @@
     <color name="edittext">#10FFFFFF</color>
     <color name="contrastPrimary">@color/md_white_1000</color>
     <color name="contrastSecondary">@color/md_grey_200</color>
+    <color name="colorSelected">@color/md_white_1000</color>
+    <color name="colorDeselected">@color/md_grey_500</color>
+    <color name="bnv">@color/md_black_1000</color>
 </resources>
