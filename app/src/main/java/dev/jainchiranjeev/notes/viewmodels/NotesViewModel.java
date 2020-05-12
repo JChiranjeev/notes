@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import dev.jainchiranjeev.notes.dao.NotesDB;
@@ -19,6 +20,8 @@ public class NotesViewModel extends AndroidViewModel {
     NoteByIdLiveData noteByIdLiveData;
     UpdateNoteLiveData updateNoteLiveData;
     DeleteNoteLiveData deleteNoteLiveData;
+    DeleteMultipleNotesLiveData deleteMultipleNotesLiveData;
+    ArchiveMultipleNotesLiveData archiveMultipleNotesLiveData;
     public NotesViewModel(@NonNull Application application) {
         super(application);
     }
@@ -47,6 +50,16 @@ public class NotesViewModel extends AndroidViewModel {
         deleteNoteLiveData = new DeleteNoteLiveData(context,note);
         return deleteNoteLiveData;
     }
+
+    public LiveData<Boolean> deleteMultipleNotes(Context context, List<NoteModel> notesToDelete) {
+        deleteMultipleNotesLiveData = new DeleteMultipleNotesLiveData(context, notesToDelete);
+        return deleteMultipleNotesLiveData;
+    }
+
+    public LiveData<Boolean> archiveMultipleNotes(Context context, List<NoteModel> notesToArchive) {
+        archiveMultipleNotesLiveData = new ArchiveMultipleNotesLiveData(context, notesToArchive);
+        return archiveMultipleNotesLiveData;
+    }
 }
 
 class AllNotesLiveData extends LiveData<List<NoteModel>> {
@@ -55,16 +68,6 @@ class AllNotesLiveData extends LiveData<List<NoteModel>> {
     AllNotesLiveData(Context context) {
         this.context = context;
         getAllNotes();
-    }
-
-    @Override
-    protected void postValue(List<NoteModel> value) {
-        super.postValue(value);
-    }
-
-    @Override
-    protected void setValue(List<NoteModel> value) {
-        super.setValue(value);
     }
 
     private void getAllNotes() {
@@ -90,16 +93,6 @@ class AddNoteLiveData extends LiveData<Boolean> {
     AddNoteLiveData(Context context, NoteModel note) {
         this.context = context;
         addNote(note);
-    }
-
-    @Override
-    protected void postValue(Boolean value) {
-        super.postValue(value);
-    }
-
-    @Override
-    protected void setValue(Boolean value) {
-        super.setValue(value);
     }
 
     private void addNote(NoteModel note) {
@@ -128,16 +121,6 @@ class NoteByIdLiveData extends LiveData<NoteModel> {
         getNoteById(noteId);
     }
 
-    @Override
-    protected void postValue(NoteModel value) {
-        super.postValue(value);
-    }
-
-    @Override
-    protected void setValue(NoteModel value) {
-        super.setValue(value);
-    }
-
     private void getNoteById(int noteId) {
         new AsyncTask<Integer, Void, NoteModel>() {
 
@@ -163,16 +146,6 @@ class UpdateNoteLiveData extends LiveData<Boolean> {
     UpdateNoteLiveData(Context context, NoteModel note) {
         this.context = context;
         deleteNote(note);
-    }
-
-    @Override
-    protected void postValue(Boolean value) {
-        super.postValue(value);
-    }
-
-    @Override
-    protected void setValue(Boolean value) {
-        super.setValue(value);
     }
 
     private void deleteNote(NoteModel note) {
@@ -216,5 +189,66 @@ class DeleteNoteLiveData extends LiveData<Boolean> {
                 setValue(aBoolean);
             }
         }.execute(note);
+    }
+}
+
+class DeleteMultipleNotesLiveData extends LiveData<Boolean> {
+    private final Context context;
+
+    DeleteMultipleNotesLiveData(Context context, List<NoteModel> notesList) {
+        this.context = context;
+        deleteMultipleNotes(notesList);
+    }
+
+    private void deleteMultipleNotes(List<NoteModel> notesList) {
+        new AsyncTask<List<NoteModel>, Void, Boolean>() {
+
+            @Override
+            protected Boolean doInBackground(List<NoteModel>... lists) {
+                List<Integer> noteIdsToDelete = new ArrayList<>();
+                for (NoteModel note : lists[0]) {
+                    noteIdsToDelete.add(note.getNoteId());
+                }
+                NotesDB notesDB = NotesDB.getInstance(context);
+                notesDB.notesDAO().deleteMultipleNotes(noteIdsToDelete);
+                return true;
+            }
+
+            @Override
+            protected void onPostExecute(Boolean aBoolean) {
+                super.onPostExecute(aBoolean);
+                setValue(aBoolean);
+            }
+        }.execute(notesList);
+    }
+}
+
+class ArchiveMultipleNotesLiveData extends LiveData<Boolean> {
+    private final Context context;
+
+    ArchiveMultipleNotesLiveData(Context context, List<NoteModel> notesList) {
+        this.context = context;
+        archiveMultiplenotes(notesList);
+    }
+
+    private void archiveMultiplenotes(List<NoteModel> notesList) {
+        new AsyncTask<List<NoteModel>, Void, Boolean>() {
+            @Override
+            protected Boolean doInBackground(List<NoteModel>... lists) {
+                List<Integer> noteIdsToArchive = new ArrayList<>();
+                for(NoteModel note : notesList) {
+                    noteIdsToArchive.add(note.getNoteId());
+                }
+                NotesDB notesDB = NotesDB.getInstance(context);
+                notesDB.notesDAO().archiveMultipleNotes(true, noteIdsToArchive);
+                return true;
+            }
+
+            @Override
+            protected void onPostExecute(Boolean aBoolean) {
+                super.onPostExecute(aBoolean);
+                setValue(aBoolean);
+            }
+        }.execute(notesList);
     }
 }

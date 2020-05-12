@@ -22,4 +22,8 @@ public interface NotesDAO {
     void deleteNote(NoteModel note);
     @Query("SELECT * FROM table_notes WHERE noteId =:id")
     NoteModel getNoteById(int id);
+    @Query("DELETE FROM table_notes WHERE noteId IN (:ids)")
+    void deleteMultipleNotes(List<Integer> ids);
+    @Query("UPDATE table_notes SET isArchived = :isArchive WHERE noteId IN (:ids)")
+    void archiveMultipleNotes(Boolean isArchive, List<Integer> ids);
 }

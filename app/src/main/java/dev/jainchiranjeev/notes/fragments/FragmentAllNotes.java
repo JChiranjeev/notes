@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,37 +21,39 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import dev.jainchiranjeev.notes.R;
-import dev.jainchiranjeev.notes.databinding.FragmentNotesBinding;
+import dev.jainchiranjeev.notes.databinding.FragmentAllNotesBinding;
 import dev.jainchiranjeev.notes.models.NoteModel;
 import dev.jainchiranjeev.notes.presenter.NotesAdapter;
+import dev.jainchiranjeev.notes.services.SelectionEnabledListener;
 import dev.jainchiranjeev.notes.viewmodels.NotesViewModel;
 
-public class FragmentAllNotes extends Fragment implements View.OnClickListener {
+public class FragmentAllNotes extends Fragment implements View.OnClickListener, SelectionEnabledListener {
 
     View view;
-    FragmentNotesBinding binding;
+    FragmentAllNotesBinding binding;
     Context context;
     List<NoteModel> notesList;
     NotesViewModel notesViewModel;
     FragmentManager manager;
     FragmentTransaction transaction;
     Bundle bundle;
+    NotesAdapter notesAdapter;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentNotesBinding.inflate(getLayoutInflater(), container, false);
+        binding = FragmentAllNotesBinding.inflate(getLayoutInflater(), container, false);
         view = binding.getRoot();
         context = getContext();
 
         notesViewModel = ViewModelProviders.of(this).get(NotesViewModel.class);
-        notesViewModel.getNotesList(context).observe(this, data -> {
-            notesList = data;
-            handleNotes(notesList);
-        });
+        loadNotes(context, notesViewModel);
 
         binding.fabNewNote.setOnClickListener(this);
+        binding.ibArchiveButton.setOnClickListener(this);
+        binding.ibDeleteButton.setOnClickListener(this);
 
+        notesViewModel = null;
         return view;
     }
 
@@ -58,6 +61,13 @@ public class FragmentAllNotes extends Fragment implements View.OnClickListener {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    private void loadNotes(Context context, NotesViewModel notesViewModel) {
+        notesViewModel.getNotesList(context).observe(this, data -> {
+            notesList = data;
+            handleNotes(notesList);
+        });
     }
 
     private void handleNotes(List<NoteModel> notesList) {
@@ -68,7 +78,7 @@ public class FragmentAllNotes extends Fragment implements View.OnClickListener {
         } else {
             binding.svNotes.setVisibility(View.VISIBLE);
             binding.clNoNotesFound.setVisibility(View.GONE);
-            NotesAdapter notesAdapter = new NotesAdapter(context, notesList,false);
+            notesAdapter = new NotesAdapter(context, notesList,false, this);
             binding.rvNotes.setAdapter(notesAdapter);
             binding.rvNotes.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         }
@@ -89,6 +99,37 @@ public class FragmentAllNotes extends Fragment implements View.OnClickListener {
                 transaction.addToBackStack(null);
                 transaction.commit();
                 break;
+            case R.id.ib_delete_button:
+                if(notesAdapter != null) {
+                    List<NoteModel> selectedNotes = notesAdapter.getSelected();
+                    notesViewModel = ViewModelProviders.of(this).get(NotesViewModel.class);
+                    notesViewModel.deleteMultipleNotes(context, selectedNotes).observe(this, data -> {
+                        Log.i("Multiple Notes Deleted",data.toString());
+                        loadNotes(context, notesViewModel);
+                    });
+                }
+                break;
+            case R.id.ib_archive_button:
+                if(notesAdapter != null) {
+                    List<NoteModel> selectedNotes = notesAdapter.getSelected();
+                    notesViewModel = ViewModelProviders.of(this).get(NotesViewModel.class);
+                    notesViewModel.archiveMultipleNotes(context, selectedNotes).observe(this, data -> {
+                        Log.i("Multiple Notes Archived",data.toString());
+                        loadNotes(context, notesViewModel);
+                    });
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void onSelectionEnabled(Boolean selectionEnabled) {
+        if(selectionEnabled) {
+            binding.llAllNotesActions.setVisibility(View.VISIBLE);
+            Glide.with(view).load(R.drawable.ic_delete).fitCenter().into(binding.ibDeleteButton);
+            Glide.with(view).load(R.drawable.ic_archive).fitCenter().into(binding.ibArchiveButton);
+        } else {
+            binding.llAllNotesActions.setVisibility(View.GONE);
         }
     }
 }

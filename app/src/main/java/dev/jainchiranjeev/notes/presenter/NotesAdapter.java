@@ -24,6 +24,7 @@ import java.util.List;
 import dev.jainchiranjeev.notes.R;
 import dev.jainchiranjeev.notes.fragments.FragmentNoteEditor;
 import dev.jainchiranjeev.notes.models.NoteModel;
+import dev.jainchiranjeev.notes.services.SelectionEnabledListener;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> {
 
@@ -35,6 +36,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
     Boolean isSelectionEnabled = false;
     int selectionCount = 0;
     Boolean archives = false;
+    SelectionEnabledListener selectionEnabledListener;
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -67,6 +69,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
                     itemView.setBackground(note.isChecked() ?
                             ContextCompat.getDrawable(context, R.drawable.bg_note_preview_selected) :
                             ContextCompat.getDrawable(context, R.drawable.bg_note_preview));
+                    selectionEnabledListener.onSelectionEnabled(isSelectionEnabled);
                     return isSelectionEnabled;
                 }
             });
@@ -82,6 +85,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
                         selectionCount = note.isChecked() ? selectionCount+1 : selectionCount-1;
                         if(selectionCount == 0) {
                             isSelectionEnabled = !isSelectionEnabled;
+                            selectionEnabledListener.onSelectionEnabled(isSelectionEnabled);
                         }
                     } else {
                         transaction = manager.beginTransaction();
@@ -114,7 +118,9 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         return selectedNotes;
     }
 
-    public NotesAdapter(Context context, List<NoteModel> notesList, Boolean archives) {
+    public NotesAdapter(Context context, List<NoteModel> notesList, Boolean archives, SelectionEnabledListener listener) {
+        this.selectionEnabledListener = listener;
+        listener.onSelectionEnabled(false);
         this.context = context;
         this.notesList = new ArrayList<>();
         this.archives = archives;
