@@ -13,54 +13,77 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.bumptech.glide.Glide;
+
 import java.util.Calendar;
 
 import dev.jainchiranjeev.notes.R;
-import dev.jainchiranjeev.notes.databinding.FragmentNewNoteBinding;
+import dev.jainchiranjeev.notes.databinding.FragmentNoteEditorBinding;
 import dev.jainchiranjeev.notes.models.NoteModel;
 import dev.jainchiranjeev.notes.viewmodels.NotesViewModel;
 
 public class FragmentNoteEditor extends Fragment implements View.OnClickListener {
 
     View view;
-    FragmentNewNoteBinding binding;
+    FragmentNoteEditorBinding binding;
     FragmentManager manager;
     Context context;
     NotesViewModel notesViewModel;
     Boolean isNewNote;
     Bundle bundle;
+    NoteModel note = null;
+    int noteId = -1;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentNewNoteBinding.inflate(getLayoutInflater());
+        binding = FragmentNoteEditorBinding.inflate(getLayoutInflater());
         view = binding.getRoot();
         context = getContext();
         manager = getFragmentManager();
 
+//        Set Icons
+        Glide.with(view).load(R.drawable.ic_done).fitCenter().into(binding.fabSaveNote);
+
         bundle = this.getArguments();
         if(bundle != null) {
+            noteId = bundle.getInt("NoteID",-1);
             isNewNote = bundle.getBoolean("IsNewNote");
-            if(!isNewNote) {
-                int noteId = bundle.getInt("NoteID",0);
-                loadNote(noteId);
-            }
+            loadNote(noteId);
+        } else {
+            manager.popBackStack();
+        }
+
+        if(!isNewNote) {
+            binding.ibDeleteButton.setVisibility(View.VISIBLE);
+            binding.ibArchiveButton.setVisibility(View.VISIBLE);
+            Glide.with(view).load(R.drawable.ic_delete).fitCenter().into(binding.ibDeleteButton);
+            Glide.with(view).load(R.drawable.ic_archive).fitCenter().into(binding.ibArchiveButton);
+        } else {
+            binding.ibDeleteButton.setVisibility(View.GONE);
+            binding.ibArchiveButton.setVisibility(View.GONE);
         }
 
         binding.etNoteContent.requestFocus();
 
         binding.fabSaveNote.setOnClickListener(this);
+        binding.ibDeleteButton.setOnClickListener(this);
+        binding.ibArchiveButton.setOnClickListener(this);
 
         return view;
     }
 
     private void loadNote(int noteId) {
-        NoteModel note = null;
-        notesViewModel = ViewModelProviders.of(this).get(NotesViewModel.class);
-        notesViewModel.getNoteById(context, noteId).observe(this, data -> {
-            binding.etNoteTitle.setText(data.noteTitle);
-            binding.etNoteContent.setText(data.noteContent);
-        });
+        if (noteId < 0 && isNewNote) {
+            note = new NoteModel();
+        } else {
+            notesViewModel = ViewModelProviders.of(this).get(NotesViewModel.class);
+            notesViewModel.getNoteById(context, noteId).observe(this, data -> {
+                note = data;
+                binding.etNoteTitle.setText(data.getNoteTitle());
+                binding.etNoteContent.setText(data.getNoteContent());
+            });
+        }
     }
 
     @Override
@@ -72,20 +95,64 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
     public void onClick(View view) {
         switch(view.getId()) {
             case R.id.fab_save_note:
-                String noteTitle,noteContent,color;
-                long creationDate, modificationDate;
-                noteTitle = binding.etNoteTitle.getText().toString();
-                noteContent = binding.etNoteContent.getText().toString();
-                color = null;
-                creationDate = Calendar.getInstance().getTimeInMillis();
-                modificationDate = Calendar.getInstance().getTimeInMillis();
-                if(!noteContent.equals(null) && noteContent.length() > 0) {
+                if(isNewNote) {
+                    note.setNoteTitle(binding.etNoteTitle.getText().toString());
+                    note.setNoteContent(binding.etNoteContent.getText().toString());
+                    note.setColor(null);
+                    note.setCreationDate(Calendar.getInstance().getTimeInMillis());
+                    note.setModificationDate(Calendar.getInstance().getTimeInMillis());
+                    note.setPasswordProtected(false);
+                    note.setArchived(false);
+                    if(!note.getNoteContent().equals(null) && note.getNoteContent().length() > 0) {
+                        notesViewModel = ViewModelProviders.of(this).get(NotesViewModel.class);
+                        notesViewModel.addNewNote(context, note).observe(this, data -> {
+                            Log.i("Note Added", data.toString());
+                            manager.popBackStack();
+                        });
+                    }
+                    notesViewModel = null;
+                    break;
+                } else {
+                    note.setNoteTitle(binding.etNoteTitle.getText().toString());
+                    note.setNoteContent(binding.etNoteContent.getText().toString());
+                    note.setColor(null);
+                    note.setModificationDate(Calendar.getInstance().getTimeInMillis());
+                    note.setPasswordProtected(false);
+                    note.setArchived(false);
                     notesViewModel = ViewModelProviders.of(this).get(NotesViewModel.class);
-                    notesViewModel.addNewNote(context, new NoteModel(noteTitle, noteContent, creationDate, modificationDate, color, false)).observe(this, data -> {
-                        Log.i("Note Added", data.toString());
+                    notesViewModel.updateNote(context, note).observe(this, data -> {
+                        Log.i("Note Updated",data.toString());
+                        manager.popBackStack();
+                    });
+                    notesViewModel = null;
+                    break;
+                }
+            case R.id.ib_delete_button:
+                if(!isNewNote) {
+                    notesViewModel = ViewModelProviders.of(this).get(NotesViewModel.class);
+                    notesViewModel.deleteNote(context, note).observe(this, data -> {
+                        Log.i("Note Deleted",data.toString());
+                        manager.popBackStack();
                     });
                 }
-                manager.popBackStack();
+                notesViewModel = null;
+                break;
+            case R.id.ib_archive_button:
+                if(!isNewNote) {
+                    note.setNoteTitle(binding.etNoteTitle.getText().toString());
+                    note.setNoteContent(binding.etNoteContent.getText().toString());
+                    note.setColor(null);
+                    note.setModificationDate(Calendar.getInstance().getTimeInMillis());
+                    note.setPasswordProtected(false);
+                    note.setArchived(true);
+                    notesViewModel = ViewModelProviders.of(this).get(NotesViewModel.class);
+                    notesViewModel.updateNote(context, note).observe(this, data -> {
+                        Log.i("Note Updated",data.toString());
+                        manager.popBackStack();
+                    });
+                    notesViewModel = null;
+
+                }
                 break;
         }
     }

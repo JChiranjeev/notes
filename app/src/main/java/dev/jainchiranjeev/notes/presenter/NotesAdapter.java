@@ -34,6 +34,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
     NoteModel selectedNote = null;
     Boolean isSelectionEnabled = false;
     int selectionCount = 0;
+    Boolean archives = false;
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -48,9 +49,9 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         }
 
         void bind(final NoteModel note) {
-            tvNoteTitle.setText(note.noteTitle);
-            tvNoteContent.setText(note.noteContent);
-            Date date = new Date(note.modificationDate);
+            tvNoteTitle.setText(note.getNoteTitle());
+            tvNoteContent.setText(note.getNoteContent());
+            Date date = new Date(note.getModificationDate());
             SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy HH:mm");
             tvModifiedDate.setText(formatter.format(date));
             itemView.setBackground(note.isChecked() ?
@@ -86,7 +87,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
                         transaction = manager.beginTransaction();
                         FragmentNoteEditor noteEditor = new FragmentNoteEditor();
                         Bundle bundle = new Bundle();
-                        bundle.putInt("NoteID",note.noteId);
+                        bundle.putInt("NoteID",note.getNoteId());
                         bundle.putBoolean("IsNewNote",false);
                         noteEditor.setArguments(bundle);
                         transaction.replace(R.id.crfl_main_activity, noteEditor);
@@ -117,9 +118,15 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         return selectedNotes;
     }
 
-    public NotesAdapter(Context context, List<NoteModel> notesList) {
+    public NotesAdapter(Context context, List<NoteModel> notesList, Boolean archives) {
         this.context = context;
-        this.notesList = notesList;
+        this.notesList = new ArrayList<>();
+        for (NoteModel note : notesList) {
+            if(note.isArchived() == archives) {
+                this.notesList.add(note);
+            }
+        }
+        this.archives = archives;
     }
 
     public void setNotesList(List<NoteModel> notesList) {
@@ -141,7 +148,9 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         NoteModel note = notesList.get(position);
-        holder.bind(note);
+        if(note.isArchived() == archives) {
+            holder.bind(note);
+        }
     }
 
     @Override

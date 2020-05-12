@@ -17,6 +17,8 @@ public class NotesViewModel extends AndroidViewModel {
     AllNotesLiveData allNotesLiveData;
     AddNoteLiveData addNoteLiveData;
     NoteByIdLiveData noteByIdLiveData;
+    UpdateNoteLiveData updateNoteLiveData;
+    DeleteNoteLiveData deleteNoteLiveData;
     public NotesViewModel(@NonNull Application application) {
         super(application);
     }
@@ -35,6 +37,16 @@ public class NotesViewModel extends AndroidViewModel {
         noteByIdLiveData = new NoteByIdLiveData(context, noteId);
         return noteByIdLiveData;
     }
+
+    public LiveData<Boolean> updateNote(Context context, NoteModel note) {
+        updateNoteLiveData = new UpdateNoteLiveData(context, note);
+        return updateNoteLiveData;
+    }
+
+    public LiveData<Boolean> deleteNote(Context context, NoteModel note) {
+        deleteNoteLiveData = new DeleteNoteLiveData(context,note);
+        return deleteNoteLiveData;
+    }
 }
 
 class AllNotesLiveData extends LiveData<List<NoteModel>> {
@@ -42,7 +54,7 @@ class AllNotesLiveData extends LiveData<List<NoteModel>> {
 
     AllNotesLiveData(Context context) {
         this.context = context;
-        loadData();
+        getAllNotes();
     }
 
     @Override
@@ -55,7 +67,7 @@ class AllNotesLiveData extends LiveData<List<NoteModel>> {
         super.setValue(value);
     }
 
-    private void loadData() {
+    private void getAllNotes() {
         new AsyncTask<Void, Void, List<NoteModel>>() {
             @Override
             protected List<NoteModel> doInBackground(Void... voids) {
@@ -77,7 +89,7 @@ class AddNoteLiveData extends LiveData<Boolean> {
 
     AddNoteLiveData(Context context, NoteModel note) {
         this.context = context;
-        loadData(note);
+        addNote(note);
     }
 
     @Override
@@ -90,7 +102,7 @@ class AddNoteLiveData extends LiveData<Boolean> {
         super.setValue(value);
     }
 
-    private void loadData(NoteModel note) {
+    private void addNote(NoteModel note) {
         new AsyncTask<NoteModel, Void, Boolean>() {
             @Override
             protected Boolean doInBackground(NoteModel... noteModels) {
@@ -113,7 +125,7 @@ class NoteByIdLiveData extends LiveData<NoteModel> {
 
     NoteByIdLiveData(Context context, int noteId) {
         this.context = context;
-        loadData(noteId);
+        getNoteById(noteId);
     }
 
     @Override
@@ -126,7 +138,7 @@ class NoteByIdLiveData extends LiveData<NoteModel> {
         super.setValue(value);
     }
 
-    private void loadData(int noteId) {
+    private void getNoteById(int noteId) {
         new AsyncTask<Integer, Void, NoteModel>() {
 
             @Override
@@ -143,5 +155,66 @@ class NoteByIdLiveData extends LiveData<NoteModel> {
             }
         }.execute(noteId);
     }
+}
 
+class UpdateNoteLiveData extends LiveData<Boolean> {
+    private final Context context;
+
+    UpdateNoteLiveData(Context context, NoteModel note) {
+        this.context = context;
+        deleteNote(note);
+    }
+
+    @Override
+    protected void postValue(Boolean value) {
+        super.postValue(value);
+    }
+
+    @Override
+    protected void setValue(Boolean value) {
+        super.setValue(value);
+    }
+
+    private void deleteNote(NoteModel note) {
+        new AsyncTask<NoteModel, Void, Boolean>() {
+            @Override
+            protected Boolean doInBackground(NoteModel... noteModels) {
+                NotesDB notesDB = NotesDB.getInstance(context);
+                notesDB.notesDAO().updateNote(noteModels[0]);
+                return true;
+            }
+
+            @Override
+            protected void onPostExecute(Boolean aBoolean) {
+                super.onPostExecute(aBoolean);
+                setValue(aBoolean);
+            }
+        }.execute(note);
+    }
+}
+
+class DeleteNoteLiveData extends LiveData<Boolean> {
+    private final Context context;
+
+    DeleteNoteLiveData(Context context, NoteModel note) {
+        this.context = context;
+        deleteNote(note);
+    }
+
+    private void deleteNote(NoteModel note) {
+        new AsyncTask<NoteModel, Void, Boolean>() {
+            @Override
+            protected Boolean doInBackground(NoteModel... noteModels) {
+                NotesDB notesDB = NotesDB.getInstance(context);
+                notesDB.notesDAO().deleteNote(note);
+                return true;
+            }
+
+            @Override
+            protected void onPostExecute(Boolean aBoolean) {
+                super.onPostExecute(aBoolean);
+                setValue(aBoolean);
+            }
+        }.execute(note);
+    }
 }

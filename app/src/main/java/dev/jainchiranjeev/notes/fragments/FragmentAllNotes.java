@@ -34,6 +34,7 @@ public class FragmentAllNotes extends Fragment implements View.OnClickListener {
     NotesViewModel notesViewModel;
     FragmentManager manager;
     FragmentTransaction transaction;
+    Bundle bundle;
 
     @Nullable
     @Override
@@ -67,7 +68,7 @@ public class FragmentAllNotes extends Fragment implements View.OnClickListener {
         } else {
             binding.svNotes.setVisibility(View.VISIBLE);
             binding.clNoNotesFound.setVisibility(View.GONE);
-            NotesAdapter notesAdapter = new NotesAdapter(context, notesList);
+            NotesAdapter notesAdapter = new NotesAdapter(context, notesList,false);
             binding.rvNotes.setAdapter(notesAdapter);
             binding.rvNotes.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         }
@@ -77,10 +78,14 @@ public class FragmentAllNotes extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.fab_new_note:
+                FragmentNoteEditor noteEditor = new FragmentNoteEditor();
                 manager = getFragmentManager();
                 transaction = manager.beginTransaction();
+                bundle = new Bundle();
+                bundle.putBoolean("IsNewNote",true);
+                noteEditor.setArguments(bundle);
                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                transaction.replace(R.id.crfl_main_activity, new FragmentNoteEditor());
+                transaction.replace(R.id.crfl_main_activity, noteEditor);
                 transaction.addToBackStack(null);
                 transaction.commit();
                 break;
