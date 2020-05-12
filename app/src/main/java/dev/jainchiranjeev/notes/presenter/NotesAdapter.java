@@ -111,26 +111,27 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
                 selectedNotes.add(note);
             }
         }
-//        if(selectedNotes.size() == 0) {
-//            Log.i("Notes Selected: ", String.valueOf(selectedNotes.size()));
-//            isSelectionEnabled = false;
-//        }
         return selectedNotes;
     }
 
     public NotesAdapter(Context context, List<NoteModel> notesList, Boolean archives) {
         this.context = context;
         this.notesList = new ArrayList<>();
+        this.archives = archives;
         for (NoteModel note : notesList) {
             if(note.isArchived() == archives) {
                 this.notesList.add(note);
             }
         }
-        this.archives = archives;
     }
 
     public void setNotesList(List<NoteModel> notesList) {
-        this.notesList = notesList;
+        this.notesList = new ArrayList<>();
+        for (NoteModel note : notesList) {
+            if(note.isArchived() == archives) {
+                this.notesList.add(note);
+            }
+        }
         notifyDataSetChanged();
     }
 
@@ -148,9 +149,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         NoteModel note = notesList.get(position);
-        if(note.isArchived() == archives) {
-            holder.bind(note);
-        }
+        holder.bind(note);
     }
 
     @Override

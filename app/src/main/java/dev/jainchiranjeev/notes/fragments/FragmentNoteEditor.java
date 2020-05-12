@@ -2,6 +2,8 @@ package dev.jainchiranjeev.notes.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +35,7 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
     Bundle bundle;
     NoteModel note = null;
     int noteId = -1;
+    Boolean isContentAvailable = false;
 
     @Nullable
     @Override
@@ -54,17 +57,31 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
             manager.popBackStack();
         }
 
-        if(!isNewNote) {
-            binding.ibDeleteButton.setVisibility(View.VISIBLE);
-            binding.ibArchiveButton.setVisibility(View.VISIBLE);
-            Glide.with(view).load(R.drawable.ic_delete).fitCenter().into(binding.ibDeleteButton);
-            Glide.with(view).load(R.drawable.ic_archive).fitCenter().into(binding.ibArchiveButton);
-        } else {
-            binding.ibDeleteButton.setVisibility(View.GONE);
-            binding.ibArchiveButton.setVisibility(View.GONE);
-        }
+        hideOrDisplayActions(isNewNote, isContentAvailable);
 
         binding.etNoteContent.requestFocus();
+
+        binding.etNoteContent.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(charSequence.length() > 0) {
+                    isContentAvailable = true;
+                } else {
+                    isContentAvailable = false;
+                }
+                hideOrDisplayActions(isNewNote, isContentAvailable);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
 
         binding.fabSaveNote.setOnClickListener(this);
         binding.ibDeleteButton.setOnClickListener(this);
@@ -73,10 +90,29 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
         return view;
     }
 
+    private void hideOrDisplayActions(Boolean isNewNote, Boolean isContentAvailable) {
+        if(!isNewNote && isContentAvailable) {
+            binding.ibDeleteButton.setVisibility(View.VISIBLE);
+            binding.ibArchiveButton.setVisibility(View.VISIBLE);
+            Glide.with(view).load(R.drawable.ic_delete).fitCenter().into(binding.ibDeleteButton);
+            Glide.with(view).load(R.drawable.ic_archive).fitCenter().into(binding.ibArchiveButton);
+        } else if (isNewNote && isContentAvailable) {
+            binding.ibDeleteButton.setVisibility(View.VISIBLE);
+            binding.ibArchiveButton.setVisibility(View.VISIBLE);
+            Glide.with(view).load(R.drawable.ic_delete).fitCenter().into(binding.ibDeleteButton);
+            Glide.with(view).load(R.drawable.ic_archive).fitCenter().into(binding.ibArchiveButton);
+        } else {
+            binding.ibDeleteButton.setVisibility(View.GONE);
+            binding.ibArchiveButton.setVisibility(View.GONE);
+        }
+    }
+
     private void loadNote(int noteId) {
         if (noteId < 0 && isNewNote) {
+            isContentAvailable = false;
             note = new NoteModel();
         } else {
+            isContentAvailable = true;
             notesViewModel = ViewModelProviders.of(this).get(NotesViewModel.class);
             notesViewModel.getNoteById(context, noteId).observe(this, data -> {
                 note = data;
@@ -96,7 +132,12 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
         switch(view.getId()) {
             case R.id.fab_save_note:
                 if(isNewNote) {
-                    note.setNoteTitle(binding.etNoteTitle.getText().toString());
+                    if(binding.etNoteTitle.getText() == null || binding.etNoteTitle.getText().toString().isEmpty()) {
+                        String[] array = binding.etNoteContent.getText().toString().split(" ");
+                        note.setNoteTitle(array[0]);
+                    } else {
+                        note.setNoteTitle(binding.etNoteTitle.getText().toString());
+                    }
                     note.setNoteContent(binding.etNoteContent.getText().toString());
                     note.setColor(null);
                     note.setCreationDate(Calendar.getInstance().getTimeInMillis());
@@ -109,6 +150,8 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
                             Log.i("Note Added", data.toString());
                             manager.popBackStack();
                         });
+                    } else  {
+                        manager.popBackStack();
                     }
                     notesViewModel = null;
                     break;
@@ -134,6 +177,8 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
                         Log.i("Note Deleted",data.toString());
                         manager.popBackStack();
                     });
+                } else {
+                    manager.popBackStack();
                 }
                 notesViewModel = null;
                 break;
@@ -151,7 +196,19 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
                         manager.popBackStack();
                     });
                     notesViewModel = null;
-
+                } else {
+                    note.setNoteTitle(binding.etNoteTitle.getText().toString());
+                    note.setNoteContent(binding.etNoteContent.getText().toString());
+                    note.setColor(null);
+                    note.setModificationDate(Calendar.getInstance().getTimeInMillis());
+                    note.setPasswordProtected(false);
+                    note.setArchived(true);
+                    notesViewModel = ViewModelProviders.of(this).get(NotesViewModel.class);
+                    notesViewModel.addNewNote(context, note).observe(this, data -> {
+                        Log.i("Note Updated",data.toString());
+                        manager.popBackStack();
+                    });
+                    notesViewModel = null;
                 }
                 break;
         }
