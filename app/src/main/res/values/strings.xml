@@ -1,4 +1,28 @@
 <resources>
+    <string name="url_linkedin">https://www.linkedin.com/in/chiranjeev-jain/</string>
+    <string name="url_github">https://github.com/JChiranjeev/</string>
+    <string name="url_so">https://stackoverflow.com/users/2976742/chiranjeev-jain</string>
+    <string name="url_twitter">https://twitter.com/_JainChiranjeev</string>
+    <string name="url_website">https://jainchiranjeev.dev</string>
+    <string name="url_fork_on_github">https://github.com/JChiranjeev/git-profile</string>
+    <string name="url_email">mailto:jainchiranjeev252@gmail.com</string>
+
+    <string name="url_glide_github">https://github.com/bumptech/glide</string>
+    <string name="url_glide_website">http://www.bu.mp/</string>
+    <string name="url_msv_github">https://github.com/deano2390/MaterialShowcaseView</string>
+    <string name="url_msv_website">http://www.deanwild.co.uk/</string>
+
+    <string name="cr_app_icon"></string>
+    <string name="app_designed_and_developed_by">App Designed and Developed by</string>
+    <string name="jain_chiranjeev">Jain Chiranjeev</string>
+    <string name="fork_on_github">Fork on Github</string>
+    <string name="glide_name">Glide</string>
+    <string name="msv_name">Material Showcase View</string>
+    <string name="glide_developer">by Bump Technologies</string>
+    <string name="glide_description">An image loading and caching library for Android focused on smooth scrolling</string>
+    <string name="msv_developer">by Dean Wild</string>
+    <string name="msv_description">A Material Design themed ShowcaseView for Android</string>
+
     <string name="app_name">Notes</string>
     <string name="notes">Notes</string>
     <string name="books">Books</string>
