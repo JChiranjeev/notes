@@ -38,7 +38,9 @@ public class FragmentMain extends Fragment {
         context = getContext();
 
         fragmentAllNotes = new FragmentAllNotes();
-
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("IsArchivesView",false);
+        fragmentAllNotes.setArguments(bundle);
         manager = getFragmentManager();
         transaction = manager.beginTransaction();
         transaction.replace(binding.crflMainFragment.getId(), fragmentAllNotes);

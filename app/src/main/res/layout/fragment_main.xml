@@ -18,10 +18,17 @@
         android:layout_marginBottom="88dp"
         android:id="@+id/snackbar_main_fragment"/>
 
+<!--    <androidx.coordinatorlayout.widget.CoordinatorLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        android:id="@+id/snackbar_main_fragment"/>-->
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_width="match_parent"
         android:layout_height="72dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="gone"
         android:id="@+id/bnv_fragment_main"
         app:itemIconTint="@color/bnv_selector"
         app:itemTextColor="@color/bnv_selector"
