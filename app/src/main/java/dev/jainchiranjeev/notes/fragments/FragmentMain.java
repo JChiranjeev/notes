@@ -19,7 +19,7 @@ import com.google.android.material.snackbar.Snackbar;
 import dev.jainchiranjeev.notes.R;
 import dev.jainchiranjeev.notes.databinding.FragmentMainBinding;
 
-public class FragmentMain extends Fragment {
+public class FragmentMain extends Fragment implements View.OnClickListener {
 
     View view;
     Context context;
@@ -51,6 +51,8 @@ public class FragmentMain extends Fragment {
 //        View Bindings
         bottomNavigationView = binding.bnvFragmentMain;
 
+        binding.ibAboutButton.setOnClickListener(this);
+
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -81,5 +83,20 @@ public class FragmentMain extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch(view.getId()) {
+            case R.id.ib_about_button:
+                FragmentAbout fragmentAbout = new FragmentAbout();
+                manager = getFragmentManager();
+                transaction = manager.beginTransaction();
+                transaction.replace(R.id.crfl_main_activity, fragmentAbout);
+                transaction.addToBackStack(null);
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                transaction.commit();
+                break;
+        }
     }
 }

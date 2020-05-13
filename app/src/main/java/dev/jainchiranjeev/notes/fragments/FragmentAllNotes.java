@@ -66,8 +66,8 @@ public class FragmentAllNotes extends Fragment implements View.OnClickListener, 
         loadNotes(context, notesViewModel);
 
         binding.fabNewNote.setOnClickListener(this);
-        binding.ibArchiveButton.setOnClickListener(this);
-        binding.ibDeleteButton.setOnClickListener(this);
+        binding.fabArchiveNotes.setOnClickListener(this);
+        binding.fabDeleteNotes.setOnClickListener(this);
         binding.tvNotesToolbar.setOnLongClickListener(this);
 
         notesViewModel = null;
@@ -102,6 +102,8 @@ public class FragmentAllNotes extends Fragment implements View.OnClickListener, 
     }
 
     private void handleNotes(List<NoteModel> notesList) {
+        notesAdapter = new NotesAdapter(context, notesList, isArchivesView, this);
+        notesList = notesAdapter.notesList;
         if (notesList == null || notesList.size() < 1) {
             binding.svNotes.setVisibility(View.GONE);
             binding.clNoNotesFound.setVisibility(View.VISIBLE);
@@ -109,7 +111,7 @@ public class FragmentAllNotes extends Fragment implements View.OnClickListener, 
         } else {
             binding.svNotes.setVisibility(View.VISIBLE);
             binding.clNoNotesFound.setVisibility(View.GONE);
-            notesAdapter = new NotesAdapter(context, notesList, isArchivesView, this);
+//            notesAdapter = new NotesAdapter(context, notesList, isArchivesView, this);
             binding.rvNotes.setAdapter(notesAdapter);
             binding.rvNotes.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         }
@@ -130,7 +132,7 @@ public class FragmentAllNotes extends Fragment implements View.OnClickListener, 
                 transaction.addToBackStack(null);
                 transaction.commit();
                 break;
-            case R.id.ib_delete_button:
+            case R.id.fab_delete_notes:
                 if (notesAdapter != null) {
                     List<NoteModel> selectedNotes = notesAdapter.getSelected();
                     notesViewModel = ViewModelProviders.of(this).get(NotesViewModel.class);
@@ -140,7 +142,7 @@ public class FragmentAllNotes extends Fragment implements View.OnClickListener, 
                     });
                 }
                 break;
-            case R.id.ib_archive_button:
+            case R.id.fab_archive_notes:
                 if (notesAdapter != null) {
                     List<NoteModel> selectedNotes = notesAdapter.getSelected();
                     notesViewModel = ViewModelProviders.of(this).get(NotesViewModel.class);
@@ -157,10 +159,12 @@ public class FragmentAllNotes extends Fragment implements View.OnClickListener, 
     public void onSelectionEnabled(Boolean selectionEnabled) {
         if (selectionEnabled) {
             binding.llAllNotesActions.setVisibility(View.VISIBLE);
-            Glide.with(view).load(R.drawable.ic_delete).fitCenter().into(binding.ibDeleteButton);
-            Glide.with(view).load(R.drawable.ic_archive).fitCenter().into(binding.ibArchiveButton);
+            binding.fabNewNote.setVisibility(View.GONE);
+            Glide.with(view).load(R.drawable.ic_delete).fitCenter().into(binding.fabDeleteNotes);
+            Glide.with(view).load(R.drawable.ic_archive).fitCenter().into(binding.fabArchiveNotes);
         } else {
             binding.llAllNotesActions.setVisibility(View.GONE);
+            binding.fabNewNote.setVisibility(View.VISIBLE);
         }
     }
 
