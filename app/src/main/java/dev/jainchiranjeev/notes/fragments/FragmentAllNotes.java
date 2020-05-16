@@ -2,6 +2,7 @@ package dev.jainchiranjeev.notes.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -83,8 +84,10 @@ public class FragmentAllNotes extends Fragment implements View.OnClickListener, 
 
         if (isArchivesView) {
             binding.tvNotesToolbar.setText("Archives");
+            binding.fabNewNote.setVisibility(View.GONE);
         } else {
             binding.tvNotesToolbar.setText("Notes");
+            binding.fabNewNote.setVisibility(View.VISIBLE);
         }
     }
 
@@ -121,13 +124,20 @@ public class FragmentAllNotes extends Fragment implements View.OnClickListener, 
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.fab_new_note:
+                binding.fabNewNote.setTransitionName("transition_note_content-1");
                 FragmentNoteEditor noteEditor = new FragmentNoteEditor();
                 manager = getFragmentManager();
                 transaction = manager.beginTransaction();
+
+                noteEditor.setSharedElementEnterTransition(TransitionInflater.from(context).inflateTransition(R.transition.transition_basic));
+                noteEditor.setSharedElementReturnTransition(TransitionInflater.from(context).inflateTransition(R.transition.transition_basic));
+                setEnterTransition(null);
+                setExitTransition(null);
+
+                transaction.addSharedElement(binding.fabNewNote, "transition_note_content-1");
                 bundle = new Bundle();
                 bundle.putBoolean("IsNewNote", true);
                 noteEditor.setArguments(bundle);
-                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 transaction.replace(R.id.crfl_main_activity, noteEditor);
                 transaction.addToBackStack(null);
                 transaction.commit();
@@ -144,12 +154,21 @@ public class FragmentAllNotes extends Fragment implements View.OnClickListener, 
                 break;
             case R.id.fab_archive_notes:
                 if (notesAdapter != null) {
-                    List<NoteModel> selectedNotes = notesAdapter.getSelected();
-                    notesViewModel = ViewModelProviders.of(this).get(NotesViewModel.class);
-                    notesViewModel.archiveMultipleNotes(context, selectedNotes).observe(this, data -> {
-                        Log.i("Multiple Notes Archived", data.toString());
-                        loadNotes(context, notesViewModel);
-                    });
+                    if(isArchivesView) {
+                        List<NoteModel> selectedNotes = notesAdapter.getSelected();
+                        notesViewModel = ViewModelProviders.of(this).get(NotesViewModel.class);
+                        notesViewModel.archiveMultipleNotes(context, selectedNotes, !isArchivesView).observe(this, data -> {
+                            Log.i("Notes Unarchived", data.toString());
+                            loadNotes(context, notesViewModel);
+                        });
+                    } else {
+                        List<NoteModel> selectedNotes = notesAdapter.getSelected();
+                        notesViewModel = ViewModelProviders.of(this).get(NotesViewModel.class);
+                        notesViewModel.archiveMultipleNotes(context, selectedNotes, !isArchivesView).observe(this, data -> {
+                            Log.i("Notes Archived", data.toString());
+                            loadNotes(context, notesViewModel);
+                        });
+                    }
                 }
                 break;
         }
@@ -160,11 +179,20 @@ public class FragmentAllNotes extends Fragment implements View.OnClickListener, 
         if (selectionEnabled) {
             binding.llAllNotesActions.setVisibility(View.VISIBLE);
             binding.fabNewNote.setVisibility(View.GONE);
-            Glide.with(view).load(R.drawable.ic_delete).fitCenter().into(binding.fabDeleteNotes);
-            Glide.with(view).load(R.drawable.ic_archive).fitCenter().into(binding.fabArchiveNotes);
+            if(isArchivesView) {
+                Glide.with(view).load(R.drawable.ic_delete).fitCenter().into(binding.fabDeleteNotes);
+                Glide.with(view).load(R.drawable.ic_unarchive).fitCenter().into(binding.fabArchiveNotes);
+            } else {
+                Glide.with(view).load(R.drawable.ic_delete).fitCenter().into(binding.fabDeleteNotes);
+                Glide.with(view).load(R.drawable.ic_archive).fitCenter().into(binding.fabArchiveNotes);
+            }
         } else {
             binding.llAllNotesActions.setVisibility(View.GONE);
-            binding.fabNewNote.setVisibility(View.VISIBLE);
+            if(isArchivesView) {
+                binding.fabNewNote.setVisibility(View.GONE);
+            } else {
+                binding.fabNewNote.setVisibility(View.VISIBLE);
+            }
         }
     }
 

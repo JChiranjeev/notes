@@ -16,7 +16,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_notes_toolbar"
-            style="@style/FontRalewayMedium"
+            style="@style/FontSourceSansMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
@@ -55,7 +55,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_no_notes_found"
-            style="@style/FontRalewaySemiBold"
+            style="@style/FontSourceSansSemiBold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -83,6 +83,7 @@
         android:layout_marginBottom="88dp"
         android:backgroundTint="@color/contrastPrimary"
         app:fabSize="normal"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_new"

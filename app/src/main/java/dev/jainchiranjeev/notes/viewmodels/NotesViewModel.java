@@ -56,8 +56,8 @@ public class NotesViewModel extends AndroidViewModel {
         return deleteMultipleNotesLiveData;
     }
 
-    public LiveData<Boolean> archiveMultipleNotes(Context context, List<NoteModel> notesToArchive) {
-        archiveMultipleNotesLiveData = new ArchiveMultipleNotesLiveData(context, notesToArchive);
+    public LiveData<Boolean> archiveMultipleNotes(Context context, List<NoteModel> notesToArchive, Boolean archive) {
+        archiveMultipleNotesLiveData = new ArchiveMultipleNotesLiveData(context, notesToArchive, archive);
         return archiveMultipleNotesLiveData;
     }
 }
@@ -225,9 +225,11 @@ class DeleteMultipleNotesLiveData extends LiveData<Boolean> {
 
 class ArchiveMultipleNotesLiveData extends LiveData<Boolean> {
     private final Context context;
+    private final Boolean archive;
 
-    ArchiveMultipleNotesLiveData(Context context, List<NoteModel> notesList) {
+    ArchiveMultipleNotesLiveData(Context context, List<NoteModel> notesList, Boolean archive) {
         this.context = context;
+        this.archive = archive;
         archiveMultiplenotes(notesList);
     }
 
@@ -240,7 +242,7 @@ class ArchiveMultipleNotesLiveData extends LiveData<Boolean> {
                     noteIdsToArchive.add(note.getNoteId());
                 }
                 NotesDB notesDB = NotesDB.getInstance(context);
-                notesDB.notesDAO().archiveMultipleNotes(true, noteIdsToArchive);
+                notesDB.notesDAO().archiveMultipleNotes(archive, noteIdsToArchive);
                 return true;
             }
 

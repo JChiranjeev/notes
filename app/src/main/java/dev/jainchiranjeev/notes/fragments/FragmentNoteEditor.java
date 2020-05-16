@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -109,9 +110,12 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
 
     private void loadNote(int noteId) {
         if (noteId < 0 && isNewNote) {
+            binding.etNoteContent.setTransitionName("transition_note_content-1");
             isContentAvailable = false;
             note = new NoteModel();
         } else {
+            binding.etNoteTitle.setTransitionName("transition_note_title"+noteId);
+            binding.etNoteContent.setTransitionName("transition_note_content"+noteId);
             isContentAvailable = true;
             notesViewModel = ViewModelProviders.of(this).get(NotesViewModel.class);
             notesViewModel.getNoteById(context, noteId).observe(this, data -> {

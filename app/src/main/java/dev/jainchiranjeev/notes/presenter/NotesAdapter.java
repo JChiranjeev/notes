@@ -2,6 +2,7 @@ package dev.jainchiranjeev.notes.presenter;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,6 +52,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         }
 
         void bind(final NoteModel note) {
+            tvNoteTitle.setTransitionName("transition_note_title"+note.getNoteId());
+            tvNoteContent.setTransitionName("transition_note_content"+note.getNoteId());
             tvNoteTitle.setText(note.getNoteTitle());
             tvNoteContent.setText(note.getNoteContent());
             Date date = new Date(note.getModificationDate());
@@ -94,8 +97,11 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
                         bundle.putInt("NoteID",note.getNoteId());
                         bundle.putBoolean("IsNewNote",false);
                         noteEditor.setArguments(bundle);
+                        noteEditor.setSharedElementEnterTransition(TransitionInflater.from(context).inflateTransition(R.transition.transition_basic));
+                        noteEditor.setSharedElementReturnTransition(TransitionInflater.from(context).inflateTransition(R.transition.transition_basic));
+                        transaction.addSharedElement(tvNoteTitle, "transition_note_title"+note.getNoteId());
+                        transaction.addSharedElement(tvNoteContent, "transition_note_content"+note.getNoteId());
                         transaction.replace(R.id.crfl_main_activity, noteEditor);
-                        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                         transaction.addToBackStack(null);
                         transaction.commit();
                     }
