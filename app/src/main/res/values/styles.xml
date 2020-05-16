@@ -9,24 +9,24 @@
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
-    <style name="FontRalewayBold">
-        <item name="fontFamily">@font/raleway_bold</item>
+    <style name="FontSourceSansBold">
+        <item name="fontFamily">@font/sourcesanspro_bold</item>
     </style>
 
-    <style name="FontRalewayLight">
-        <item name="fontFamily">@font/raleway_light</item>
+    <style name="FontSourceSansLight">
+        <item name="fontFamily">@font/sourcesanspro_light</item>
     </style>
 
-    <style name="FontRalewayMedium">
-        <item name="fontFamily">@font/raleway_medium</item>
+    <style name="FontSourceSansMedium">
+        <item name="fontFamily">@font/sourcesanspro_black</item>
     </style>
 
-    <style name="FontRalewayRegular">
-        <item name="fontFamily">@font/raleway_regular</item>
+    <style name="FontSourceSansRegular">
+        <item name="fontFamily">@font/sourcesanspro_regular</item>
     </style>
 
-    <style name="FontRalewaySemiBold">
-        <item name="fontFamily">@font/raleway_semi_bold</item>
+    <style name="FontSourceSansSemiBold">
+        <item name="fontFamily">@font/sourcesanspro_semibold</item>
     </style>
 
 </resources>

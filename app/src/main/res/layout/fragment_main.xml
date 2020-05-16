@@ -47,7 +47,7 @@
         android:layout_margin="8dp"
         android:visibility="gone"
         android:background="@drawable/bg_bnv"
-        style="@style/FontRalewayBold"
+        style="@style/FontSourceSansBold"
         app:menu="@menu/bnv_menu_fragment_main"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

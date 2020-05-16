@@ -19,6 +19,7 @@
             android:layout_marginTop="72dp"
             android:layout_marginBottom="72dp"
             android:padding="8dp"
+            android:transitionName="transition_about_icon"
             app:layout_constraintEnd_toStartOf="@id/tv_about_app_name"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
@@ -26,12 +27,13 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_about_app_name"
-            style="@style/FontRalewaySemiBold"
+            style="@style/FontSourceSansSemiBold"
             android:layout_width="wrap_content"
             android:layout_height="72dp"
             android:layout_marginTop="72dp"
             android:gravity="center"
             android:paddingStart="16dp"
+            android:transitionName="transition_about_title"
             android:paddingEnd="16dp"
             android:text="@string/app_name"
             android:textColor="@color/textColorPrimary"
@@ -59,7 +61,7 @@
                 android:paddingEnd="16dp">
 
                 <com.google.android.material.textview.MaterialTextView
-                    style="@style/FontRalewayRegular"
+                    style="@style/FontSourceSansRegular"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -68,7 +70,7 @@
                     android:textSize="14sp" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    style="@style/FontRalewaySemiBold"
+                    style="@style/FontSourceSansSemiBold"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -162,7 +164,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_libraries_used"
-            style="@style/FontRalewaySemiBold"
+            style="@style/FontSourceSansSemiBold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -214,7 +216,7 @@
                             android:textSize="20sp" />
 
                         <com.google.android.material.textview.MaterialTextView
-                            style="@style/FontRalewayBold"
+                            style="@style/FontSourceSansBold"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_marginTop="4dp"
@@ -297,7 +299,7 @@
                             android:textSize="20sp" />
 
                         <com.google.android.material.textview.MaterialTextView
-                            style="@style/FontRalewayBold"
+                            style="@style/FontSourceSansBold"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_marginTop="4dp"

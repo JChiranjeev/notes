@@ -9,7 +9,7 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tv_new_note_toolbar"
-        style="@style/FontRalewayMedium"
+        style="@style/FontSourceSansMedium"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ellipsize="end"
@@ -27,7 +27,7 @@
 
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/et_note_title"
-        style="@style/FontRalewayMedium"
+        style="@style/FontSourceSansMedium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
@@ -44,7 +44,7 @@
 
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/et_note_content"
-        style="@style/FontRalewayRegular"
+        style="@style/FontSourceSansRegular"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"

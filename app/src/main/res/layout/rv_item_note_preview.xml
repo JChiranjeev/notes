@@ -13,7 +13,7 @@
         android:text="Note Title"
         android:padding="4dp"
         android:textSize="16sp"
-        style="@style/FontRalewayBold"
+        style="@style/FontSourceSansBold"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <com.google.android.material.textview.MaterialTextView
@@ -23,7 +23,7 @@
         android:text="Note Content Hello World\nHelloWorld"
         android:padding="4dp"
         android:textSize="14sp"
-        style="@style/FontRalewaySemiBold"
+        style="@style/FontSourceSansSemiBold"
         app:lineHeight="20sp"
         android:maxLines="5"
         android:ellipsize="end"
@@ -35,7 +35,7 @@
         android:id="@+id/tv_note_preview_modified"
         android:text="1/1/2000 00:00"
         android:padding="4dp"
-        style="@style/FontRalewayRegular"
+        style="@style/FontSourceSansRegular"
         android:maxLines="5"
         android:ellipsize="end"
         android:textSize="12sp"

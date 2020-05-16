@@ -2,6 +2,7 @@ package dev.jainchiranjeev.notes.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -89,12 +90,19 @@ public class FragmentMain extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch(view.getId()) {
             case R.id.ib_about_button:
+                binding.ibAboutButton.setTransitionName("transition_about_icon");
+                binding.crflMainFragment.findViewById(R.id.tv_notes_toolbar).setTransitionName("transition_about_title");
                 FragmentAbout fragmentAbout = new FragmentAbout();
                 manager = getFragmentManager();
                 transaction = manager.beginTransaction();
+
+                fragmentAbout.setSharedElementEnterTransition(TransitionInflater.from(context).inflateTransition(R.transition.transition_basic));
+                fragmentAbout.setSharedElementReturnTransition(TransitionInflater.from(context).inflateTransition(R.transition.transition_basic));
+
+                transaction.addSharedElement(binding.ibAboutButton,"transition_about_icon");
+                transaction.addSharedElement(binding.crflMainFragment.findViewById(R.id.tv_notes_toolbar),"transition_about_title");
                 transaction.replace(R.id.crfl_main_activity, fragmentAbout);
                 transaction.addToBackStack(null);
-                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 transaction.commit();
                 break;
         }
