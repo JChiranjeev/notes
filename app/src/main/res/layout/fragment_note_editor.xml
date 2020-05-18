@@ -71,35 +71,21 @@
         android:textSize="20sp"
         app:layout_constraintTop_toBottomOf="@id/ll_toolbar"/>
 
-<!--    <androidx.appcompat.widget.AppCompatEditText-->
-<!--        android:id="@+id/et_note_content"-->
-<!--        style="@style/FontSourceSansRegular"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_margin="8dp"-->
-<!--        android:background="@drawable/bg_edittext"-->
-<!--        android:ellipsize="end"-->
-<!--        android:gravity="top|start"-->
-<!--        android:hint="Note Content"-->
-<!--        android:inputType="textCapSentences"-->
-<!--        android:padding="16dp"-->
-<!--        android:textCursorDrawable="@null"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/et_note_title"/>-->
-
-    <io.github.mthli.knife.KnifeText
+    <org.wordpress.aztec.AztecText
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:inputType="textMultiLine|textCapSentences"
+        android:imeOptions="flagNoExtractUi"
+        android:id="@+id/at_note_content"
+        app:quoteBackground="@color/md_grey_300"
+        android:hint="Note Content"
+        android:gravity="top|start"
+        app:textColor="@color/textColorPrimary"
+        android:textCursorDrawable="@null"
         app:layout_constraintTop_toBottomOf="@id/et_note_title"
         app:layout_constraintBottom_toTopOf="@id/ll_note_editor_actions"
-        style="@style/FontSourceSansRegular"
-        android:padding="16dp"
-        android:gravity="top|start"
-        android:hint="Note Content"
-        android:inputType="textCapSentences|textMultiLine"
-        android:ellipsize="end"
         android:layout_margin="8dp"
-        android:background="@drawable/bg_edittext"
-        android:id="@+id/kt_note_content"/>
+        android:padding="16dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -108,30 +94,17 @@
         android:id="@+id/ll_note_editor_actions"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <LinearLayout
+        <org.wordpress.aztec.toolbar.AztecToolbar
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            app:toolbarBorderColor="@color/transparent"
+            app:toolbarBackgroundColor="@color/transparent"
+            app:toolbarIconNormalColor="@color/contrastPrimary"
+            app:mediaToolbarAvailable="false"
+            android:id="@+id/at_toolbar"
             android:layout_weight="1"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:scrollbars="horizontal">
-
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:layout_width="48dp"
-                android:layout_height="match_parent"
-                android:padding="8dp"
-                android:scaleType="fitCenter"
-                android:background="@color/transparent"
-                android:id="@+id/ib_format_bold"
-                android:src="@drawable/ic_bold"
-                android:layout_gravity="center_vertical"
-                android:tint="@color/contrastPrimary"
-                app:layout_constraintDimensionRatio="1"/>
-
-        </LinearLayout>
+            app:layout_constraintBottom_toTopOf="@id/ll_note_editor_actions"
+            android:layout_margin="8dp"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_save_note"
