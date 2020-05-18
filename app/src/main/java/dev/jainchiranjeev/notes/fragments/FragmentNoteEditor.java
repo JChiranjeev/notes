@@ -3,6 +3,7 @@ package dev.jainchiranjeev.notes.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.SpannableString;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,8 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.DimenRes;
+import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.text.HtmlCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
@@ -23,7 +27,9 @@ import java.util.Calendar;
 import dev.jainchiranjeev.notes.R;
 import dev.jainchiranjeev.notes.databinding.FragmentNoteEditorBinding;
 import dev.jainchiranjeev.notes.models.NoteModel;
+import dev.jainchiranjeev.notes.utils.TextStylist;
 import dev.jainchiranjeev.notes.viewmodels.NotesViewModel;
+import io.github.mthli.knife.KnifeText;
 
 public class FragmentNoteEditor extends Fragment implements View.OnClickListener {
 
@@ -46,6 +52,8 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
         context = getContext();
         manager = getFragmentManager();
 
+        setupKnifeEditor(binding.ktNoteContent);
+
 //        Set Icons
         Glide.with(view).load(R.drawable.ic_done).fitCenter().into(binding.fabSaveNote);
 
@@ -60,9 +68,9 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
 
         hideOrDisplayActions(isNewNote, isContentAvailable);
 
-        binding.etNoteContent.requestFocus();
+        binding.ktNoteContent.requestFocus();
 
-        binding.etNoteContent.addTextChangedListener(new TextWatcher() {
+        binding.ktNoteContent.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -87,8 +95,13 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
         binding.fabSaveNote.setOnClickListener(this);
         binding.ibDeleteButton.setOnClickListener(this);
         binding.ibArchiveButton.setOnClickListener(this);
+        binding.ibFormatBold.setOnClickListener(this);
 
         return view;
+    }
+
+    private void setupKnifeEditor(KnifeText knifeText) {
+
     }
 
     private void hideOrDisplayActions(Boolean isNewNote, Boolean isContentAvailable) {
@@ -110,25 +123,20 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
 
     private void loadNote(int noteId) {
         if (noteId < 0 && isNewNote) {
-            binding.etNoteContent.setTransitionName("transition_note_content-1");
+            binding.ktNoteContent.setTransitionName("transition_note_content-1");
             isContentAvailable = false;
             note = new NoteModel();
         } else {
             binding.etNoteTitle.setTransitionName("transition_note_title"+noteId);
-            binding.etNoteContent.setTransitionName("transition_note_content"+noteId);
+            binding.ktNoteContent.setTransitionName("transition_note_content"+noteId);
             isContentAvailable = true;
             notesViewModel = ViewModelProviders.of(this).get(NotesViewModel.class);
             notesViewModel.getNoteById(context, noteId).observe(this, data -> {
                 note = data;
                 binding.etNoteTitle.setText(data.getNoteTitle());
-                binding.etNoteContent.setText(data.getNoteContent());
+                binding.ktNoteContent.setText(data.getNoteContent());
             });
         }
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
     }
 
     @Override
@@ -137,12 +145,12 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
             case R.id.fab_save_note:
                 if(isNewNote) {
                     if(binding.etNoteTitle.getText() == null || binding.etNoteTitle.getText().toString().isEmpty()) {
-                        String[] array = binding.etNoteContent.getText().toString().split(" ");
+                        String[] array = binding.ktNoteContent.getText().toString().split(" ");
                         note.setNoteTitle(array[0]);
                     } else {
                         note.setNoteTitle(binding.etNoteTitle.getText().toString());
                     }
-                    note.setNoteContent(binding.etNoteContent.getText().toString());
+                    note.setNoteContent(binding.ktNoteContent.getText().toString());
                     note.setColor(null);
                     note.setCreationDate(Calendar.getInstance().getTimeInMillis());
                     note.setModificationDate(Calendar.getInstance().getTimeInMillis());
@@ -161,7 +169,7 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
                     break;
                 } else {
                     note.setNoteTitle(binding.etNoteTitle.getText().toString());
-                    note.setNoteContent(binding.etNoteContent.getText().toString());
+                    note.setNoteContent(binding.ktNoteContent.getText().toString());
                     note.setColor(null);
                     note.setModificationDate(Calendar.getInstance().getTimeInMillis());
                     note.setPasswordProtected(false);
@@ -189,7 +197,7 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
             case R.id.ib_archive_button:
                 if(!isNewNote) {
                     note.setNoteTitle(binding.etNoteTitle.getText().toString());
-                    note.setNoteContent(binding.etNoteContent.getText().toString());
+                    note.setNoteContent(binding.ktNoteContent.getText().toString());
                     note.setColor(null);
                     note.setModificationDate(Calendar.getInstance().getTimeInMillis());
                     note.setPasswordProtected(false);
@@ -202,7 +210,7 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
                     notesViewModel = null;
                 } else {
                     note.setNoteTitle(binding.etNoteTitle.getText().toString());
-                    note.setNoteContent(binding.etNoteContent.getText().toString());
+                    note.setNoteContent(binding.ktNoteContent.getText().toString());
                     note.setColor(null);
                     note.setModificationDate(Calendar.getInstance().getTimeInMillis());
                     note.setPasswordProtected(false);
@@ -214,6 +222,9 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
                     });
                     notesViewModel = null;
                 }
+                break;
+            case R.id.ib_format_bold:
+                binding.ktNoteContent.bold(!binding.ktNoteContent.contains(KnifeText.FORMAT_BOLD));
                 break;
         }
     }
