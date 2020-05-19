@@ -5,6 +5,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.view.inputmethod.InputMethodManager;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.core.text.HtmlCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
@@ -185,7 +187,7 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
                     } else {
                         note.setNoteTitle(binding.etNoteTitle.getText().toString());
                     }
-                    note.setNoteContent(binding.atNoteContent.toHtml(true));
+                    note.setNoteContent(binding.atNoteContent.toHtml(false));
                     note.setColor(null);
                     note.setCreationDate(Calendar.getInstance().getTimeInMillis());
                     note.setModificationDate(Calendar.getInstance().getTimeInMillis());
@@ -205,6 +207,7 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
                 } else {
                     note.setNoteTitle(binding.etNoteTitle.getText().toString());
                     note.setNoteContent(binding.atNoteContent.toHtml(true));
+                    Log.i("Content", binding.atNoteContent.toHtml(true));
                     note.setColor(null);
                     note.setModificationDate(Calendar.getInstance().getTimeInMillis());
                     note.setPasswordProtected(false);
@@ -266,6 +269,6 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
         super.onResume();
         binding.atNoteContent.requestFocus();
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+        imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
     }
 }
