@@ -1,33 +1,29 @@
 package dev.jainchiranjeev.notes.fragments;
 
 import android.content.Context;
-import android.content.res.Resources;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.SpannableString;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.view.inputmethod.InputMethodManager;
 
-import androidx.annotation.DimenRes;
-import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-import androidx.core.text.HtmlCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.loader.app.LoaderManager;
 
 import com.bumptech.glide.Glide;
 
 import org.wordpress.aztec.Aztec;
-import org.wordpress.aztec.AztecAttributes;
 import org.wordpress.aztec.ITextFormat;
-import org.wordpress.aztec.toolbar.AztecToolbar;
 import org.wordpress.aztec.toolbar.IAztecToolbarClickListener;
 
 import java.util.Calendar;
@@ -35,9 +31,7 @@ import java.util.Calendar;
 import dev.jainchiranjeev.notes.R;
 import dev.jainchiranjeev.notes.databinding.FragmentNoteEditorBinding;
 import dev.jainchiranjeev.notes.models.NoteModel;
-import dev.jainchiranjeev.notes.utils.TextStylist;
 import dev.jainchiranjeev.notes.viewmodels.NotesViewModel;
-import io.github.mthli.knife.KnifeText;
 
 public class FragmentNoteEditor extends Fragment implements View.OnClickListener {
 
@@ -60,7 +54,6 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
         context = getContext();
         manager = getFragmentManager();
 
-        setupAztec();
 
 //        Set Icons
         Glide.with(view).load(R.drawable.ic_done).fitCenter().into(binding.fabSaveNote);
@@ -69,14 +62,13 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
         if(bundle != null) {
             noteId = bundle.getInt("NoteID",-1);
             isNewNote = bundle.getBoolean("IsNewNote");
+            setupAztec();
             loadNote(noteId);
         } else {
             manager.popBackStack();
         }
 
         hideOrDisplayActions(isNewNote, isContentAvailable);
-
-//        binding.ktNoteContent.requestFocus();
 
         binding.atNoteContent.addTextChangedListener(new TextWatcher() {
             @Override
@@ -267,5 +259,13 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
                 }
                 break;
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        binding.atNoteContent.requestFocus();
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 }

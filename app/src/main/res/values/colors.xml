@@ -6,6 +6,7 @@
     <color name="gradientStart">#FAFAFA</color>
     <color name="gradientEnd">#FAFAFA</color>
     <color name="edittext">#05000000</color>
+    <color name="quote">#10000000</color>
     <color name="contrastPrimary">@color/md_black_1000</color>
     <color name="contrastSecondary">@color/md_grey_700</color>
     <color name="colorBnvSelected">@color/md_black_1000</color>
