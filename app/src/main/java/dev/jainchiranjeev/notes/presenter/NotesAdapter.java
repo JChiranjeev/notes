@@ -2,6 +2,7 @@ package dev.jainchiranjeev.notes.presenter;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Html;
 import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.core.text.HtmlCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -55,7 +57,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
             tvNoteTitle.setTransitionName("transition_note_title"+note.getNoteId());
             tvNoteContent.setTransitionName("transition_note_content"+note.getNoteId());
             tvNoteTitle.setText(note.getNoteTitle());
-            tvNoteContent.setText(note.getNoteContent());
+            tvNoteContent.setText(HtmlCompat.fromHtml(note.getNoteContent(), HtmlCompat.FROM_HTML_MODE_COMPACT));
             Date date = new Date(note.getModificationDate());
             SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy HH:mm");
             tvModifiedDate.setText(formatter.format(date));

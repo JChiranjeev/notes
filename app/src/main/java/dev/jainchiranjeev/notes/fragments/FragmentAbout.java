@@ -44,6 +44,8 @@ public class FragmentAbout extends Fragment implements View.OnClickListener {
         Glide.with(view).load(R.drawable.ic_website).fitCenter().into(binding.ibGlideWebsite);
         Glide.with(view).load(R.drawable.ic_github).fitCenter().into(binding.ibMsvGithub);
         Glide.with(view).load(R.drawable.ic_website).fitCenter().into(binding.ibMsvWebsite);
+        Glide.with(view).load(R.drawable.ic_github).fitCenter().into(binding.ibAztecGithub);
+        Glide.with(view).load(R.drawable.ic_website).fitCenter().into(binding.ibAztecWebsite);
 
         binding.ibGithub.setOnClickListener(this);
         binding.ibLinkedin.setOnClickListener(this);
@@ -55,6 +57,8 @@ public class FragmentAbout extends Fragment implements View.OnClickListener {
         binding.ibGlideWebsite.setOnClickListener(this);
         binding.ibMsvGithub.setOnClickListener(this);
         binding.ibMsvWebsite.setOnClickListener(this);
+        binding.ibAztecGithub.setOnClickListener(this);
+        binding.ibAztecWebsite.setOnClickListener(this);
 
         return view;
     }
@@ -105,6 +109,14 @@ public class FragmentAbout extends Fragment implements View.OnClickListener {
                 break;
             case R.id.ib_msv_website:
                 url = context.getString(R.string.url_msv_website);
+                intent.launchUrl(context, Uri.parse(url));
+                break;
+            case R.id.ib_aztec_github:
+                url = context.getString(R.string.url_aztec_github);
+                intent.launchUrl(context, Uri.parse(url));
+                break;
+            case R.id.ib_aztec_website:
+                url = context.getString(R.string.url_aztec_website);
                 intent.launchUrl(context, Uri.parse(url));
                 break;
         }

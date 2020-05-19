@@ -11,6 +11,8 @@
     <string name="url_glide_website">http://www.bu.mp/</string>
     <string name="url_msv_github">https://github.com/deano2390/MaterialShowcaseView</string>
     <string name="url_msv_website">http://www.deanwild.co.uk/</string>
+    <string name="url_aztec_github">https://github.com/wordpress-mobile/AztecEditor-Android</string>
+    <string name="url_aztec_website">https://make.wordpress.org/mobile/</string>
 
     <string name="cr_app_icon"></string>
     <string name="app_designed_and_developed_by">App Designed and Developed by</string>
@@ -28,4 +30,7 @@
     <string name="books">Books</string>
     <string name="journals">Journals</string>
     <string name="new_note">New Note</string>
+    <string name="aztec_name">AztecEditor-Android</string>
+    <string name="aztec_developer">by Wordpress-Mobile</string>
+    <string name="aztec_description">A reusable native Android rich text editor component.</string>
 </resources>

@@ -2,12 +2,13 @@
 <resources>
     <color name="colorPrimary">#101010</color>
     <color name="colorPrimaryDark">#303030</color>
-    <color name="colorAccent">#303030</color>
+    <color name="colorAccent">@color/md_blue_700</color>
     <color name="gradientStart">#101010</color>
     <color name="gradientEnd">#101010</color>
     <color name="edittext">#10FFFFFF</color>
     <color name="contrastPrimary">@color/md_white_1000</color>
     <color name="contrastSecondary">@color/md_grey_200</color>
+    <color name="contrastTertiary">@color/md_grey_500</color>
     <color name="colorBnvSelected">@color/md_white_1000</color>
     <color name="colorBnvDeselected">@color/md_grey_500</color>
     <color name="bnv">@color/md_black_1000</color>
