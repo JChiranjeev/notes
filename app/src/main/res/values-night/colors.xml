@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#101010</color>
     <color name="colorPrimaryDark">#303030</color>
-    <color name="colorAccent">#303030</color>
+    <color name="colorAccent">@color/md_blue_700</color>
     <color name="gradientStart">#101010</color>
     <color name="gradientEnd">#101010</color>
     <color name="edittext">#10FFFFFF</color>
