@@ -74,8 +74,7 @@
     <org.wordpress.aztec.AztecText
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:inputType="textMultiLine|textCapSentences"
-        android:imeOptions="flagNoExtractUi"
+        android:inputType="textMultiLine|textLongMessage|textCapSentences"
         android:id="@+id/at_note_content"
         app:quoteBackground="@color/md_grey_300"
         android:hint="Note Content"

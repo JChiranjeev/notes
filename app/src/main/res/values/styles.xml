@@ -33,8 +33,8 @@
         <item name="advanced">false</item>
         <item name="toolbarBorderColor">@color/transparent</item>
         <item name="backgroundColor">@color/transparent</item>
-        <item name="toolbarIconNormalColor">@color/contrastPrimary</item>
-        <item name="toolbarIconHighlightColor">@color/almost_black</item>
+        <item name="toolbarIconNormalColor">@color/contrastTertiary</item>
+        <item name="toolbarIconHighlightColor">@color/contrastPrimary</item>
         <item name="toolbarIconDisabledColor">@color/grey_lighten_20</item>
     </style>
 

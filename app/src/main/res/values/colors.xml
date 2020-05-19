@@ -9,6 +9,7 @@
     <color name="quote">#10000000</color>
     <color name="contrastPrimary">@color/md_black_1000</color>
     <color name="contrastSecondary">@color/md_grey_700</color>
+    <color name="contrastTertiary">@color/md_grey_500</color>
     <color name="colorBnvSelected">@color/md_black_1000</color>
     <color name="colorBnvDeselected">@color/md_grey_500</color>
     <color name="bnv">@color/md_white_1000</color>
