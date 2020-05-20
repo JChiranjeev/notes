@@ -23,18 +23,19 @@
         android:background="@color/transparent"
         android:src="@drawable/ic_about"/>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="88dp"
-        android:id="@+id/snackbar_main_fragment"/>
-
 <!--    <androidx.coordinatorlayout.widget.CoordinatorLayout-->
 <!--        android:layout_width="match_parent"-->
 <!--        android:layout_height="wrap_content"-->
 <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        android:layout_marginBottom="88dp"-->
 <!--        android:id="@+id/snackbar_main_fragment"/>-->
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/snackbar_main_fragment"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_width="match_parent"
@@ -44,6 +45,7 @@
         app:itemIconTint="@color/bnv_selector"
         app:itemTextColor="@color/bnv_selector"
         android:layout_margin="8dp"
+        android:visibility="gone"
         android:background="@drawable/bg_bnv"
         style="@style/FontSourceSansBold"
         app:menu="@menu/bnv_menu_fragment_main"/>
