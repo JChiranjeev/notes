@@ -59,7 +59,7 @@ public class FragmentAllNotes extends Fragment implements View.OnClickListener, 
                 .setTarget(binding.tvNotesToolbar)
                 .setDismissText("Got It!")
                 .setContentText("Long Press to switch between Notes/Archives")
-                .setDelay(1000)
+                .setDelay(500)
                 .singleUse("NotesArchivesIntro")
                 .show();
 

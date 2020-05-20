@@ -35,6 +35,7 @@ import dev.jainchiranjeev.notes.R;
 import dev.jainchiranjeev.notes.databinding.FragmentNoteEditorBinding;
 import dev.jainchiranjeev.notes.models.NoteModel;
 import dev.jainchiranjeev.notes.viewmodels.NotesViewModel;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 
 public class FragmentNoteEditor extends Fragment implements View.OnClickListener {
 
@@ -57,7 +58,6 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
         context = getContext();
         manager = getFragmentManager();
 
-
 //        Set Icons
         Glide.with(view).load(R.drawable.ic_done).fitCenter().into(binding.fabSaveNote);
 
@@ -70,6 +70,14 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
         } else {
             manager.popBackStack();
         }
+
+        new MaterialShowcaseView.Builder(getActivity())
+                .setTarget(binding.atToolbar)
+                .setDismissText("Got It!")
+                .setContentText("Select the styling you want to apply to your text.")
+                .setDelay(500)
+                .singleUse("RichTextEditing")
+                .show();
 
         hideOrDisplayActions(isNewNote, isContentAvailable);
 

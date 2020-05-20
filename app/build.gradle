@@ -66,6 +66,7 @@ dependencies {
 
 //    WYSIWYG Rich Text Editor
     implementation 'com.github.wordpress-mobile.WordPress-Aztec-Android:aztec:v1.3.41'
+    implementation 'jp.wasabeef:richeditor-android:1.2.2'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
