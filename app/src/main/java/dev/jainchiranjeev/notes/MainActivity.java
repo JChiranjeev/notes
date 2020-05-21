@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -42,7 +43,9 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setNavigationBarColor(Color.TRANSPARENT);
         getWindow().setBackgroundDrawableResource(R.drawable.background_gradient_main_activity);
 
-        String action = getIntent().getAction();
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
         if(action.equals("dev.jainchiranjeev.notes.MainActivity.NewNoteFragment")) {
             FragmentNoteEditor noteEditor = new FragmentNoteEditor();
             manager = getSupportFragmentManager();
@@ -53,6 +56,20 @@ public class MainActivity extends AppCompatActivity {
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             transaction.replace(binding.crflMainActivity.getId(), noteEditor);
             transaction.commit();
+        } else if(action.equals(Intent.ACTION_SEND) && type != null) {
+            if(type.contains("text/plain")) {
+                FragmentNoteEditor noteEditor = new FragmentNoteEditor();
+                manager = getSupportFragmentManager();
+                transaction = manager.beginTransaction();
+                bundle = new Bundle();
+                bundle.putBoolean("IsNewNote", true);
+                bundle.putBoolean("IsSharedNote", true);
+                bundle.putString("SharedContent",intent.getStringExtra(Intent.EXTRA_TEXT));
+                noteEditor.setArguments(bundle);
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                transaction.replace(binding.crflMainActivity.getId(), noteEditor);
+                transaction.commit();
+            }
         } else {
 //        Load Home fragment
             FragmentMain fragmentMain = new FragmentMain();

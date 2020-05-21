@@ -1,6 +1,7 @@
 package dev.jainchiranjeev.notes.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -50,6 +51,8 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
     NoteModel note = null;
     int noteId = -1;
     Boolean isContentAvailable = false;
+    Boolean isSharedNote  = false;
+    String sharedContent = "";
 
     @Nullable
     @Override
@@ -62,11 +65,16 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
 //        Set Icons
         Glide.with(view).load(R.drawable.ic_done).fitCenter().into(binding.fabSaveNote);
         Glide.with(view).load(R.drawable.ic_formatting).into(binding.ibRteditor);
+        Glide.with(view).load(R.drawable.ic_share).into(binding.ibShareNote);
 
         bundle = this.getArguments();
         if(bundle != null) {
             noteId = bundle.getInt("NoteID",-1);
             isNewNote = bundle.getBoolean("IsNewNote");
+            isSharedNote = bundle.getBoolean("IsSharedNote");
+            if(isSharedNote) {
+                sharedContent = bundle.getString("SharedContent");
+            }
             setupAztec();
             loadNote(noteId);
         } else {
@@ -109,6 +117,7 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
         binding.ibDeleteButton.setOnClickListener(this);
         binding.ibArchiveButton.setOnClickListener(this);
         binding.ibRteditor.setOnClickListener(this);
+        binding.ibShareNote.setOnClickListener(this);
 
         return view;
     }
@@ -141,6 +150,10 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
             binding.atNoteContent.setTransitionName("transition_note_content-1");
             isContentAvailable = false;
             note = new NoteModel();
+            if(isSharedNote && !sharedContent.isEmpty() && sharedContent.length() > 0) {
+                binding.atNoteContent.setText(sharedContent);
+                isContentAvailable = true;
+            }
         } else {
             binding.etNoteTitle.setTransitionName("transition_note_title"+noteId);
             binding.atNoteContent.setTransitionName("transition_note_content"+noteId);
@@ -213,7 +226,7 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
             case R.id.ib_archive_button:
                 if(!isNewNote) {
                     note.setNoteTitle(binding.etNoteTitle.getText().toString());
-                    note.setNoteContent(binding.atNoteContent.getText().toString());
+                    note.setNoteContent(binding.atNoteContent.toHtml(true));
                     note.setColor(null);
                     note.setModificationDate(Calendar.getInstance().getTimeInMillis());
                     note.setPasswordProtected(false);
@@ -226,7 +239,7 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
                     notesViewModel = null;
                 } else {
                     note.setNoteTitle(binding.etNoteTitle.getText().toString());
-                    note.setNoteContent(binding.atNoteContent.getText().toString());
+                    note.setNoteContent(binding.atNoteContent.toHtml(true));
                     note.setColor(null);
                     note.setModificationDate(Calendar.getInstance().getTimeInMillis());
                     note.setPasswordProtected(false);
@@ -259,7 +272,17 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
                             .alpha(0.0f)
                             .setListener(null);
                 }
-
+                break;
+            case R.id.ib_share_note:
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                String title = binding.etNoteTitle.getText().toString();
+                String content = HtmlCompat.fromHtml(binding.atNoteContent.toHtml(true), HtmlCompat.FROM_HTML_MODE_COMPACT).toString();
+                String shareBody = title + "\n\n" + content;
+                Log.i("Share Body", shareBody);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, title);
+                shareIntent.putExtra(Intent.EXTRA_TEXT, content);
+                startActivity(Intent.createChooser(shareIntent,"Share note using..."));
                 break;
         }
     }
