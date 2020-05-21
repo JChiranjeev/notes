@@ -279,8 +279,8 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
     @Override
     public void onResume() {
         super.onResume();
-        binding.atNoteContent.requestFocus();
-        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
+//        binding.atNoteContent.requestFocus();
+//        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+//        imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
     }
 }
