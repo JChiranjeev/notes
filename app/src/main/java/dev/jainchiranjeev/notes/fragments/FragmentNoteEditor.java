@@ -61,6 +61,7 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
 
 //        Set Icons
         Glide.with(view).load(R.drawable.ic_done).fitCenter().into(binding.fabSaveNote);
+        Glide.with(view).load(R.drawable.ic_formatting).into(binding.ibRteditor);
 
         bundle = this.getArguments();
         if(bundle != null) {
@@ -107,47 +108,12 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
         binding.fabSaveNote.setOnClickListener(this);
         binding.ibDeleteButton.setOnClickListener(this);
         binding.ibArchiveButton.setOnClickListener(this);
+        binding.ibRteditor.setOnClickListener(this);
 
         return view;
     }
 
     private void setupAztec() {
-//        Aztec.with(binding.atNoteContent, binding.atToolbar, new IAztecToolbarClickListener() {
-//            @Override
-//            public void onToolbarCollapseButtonClicked() {
-//
-//            }
-//
-//            @Override
-//            public void onToolbarExpandButtonClicked() {
-//
-//            }
-//
-//            @Override
-//            public void onToolbarFormatButtonClicked(ITextFormat iTextFormat, boolean b) {
-//
-//            }
-//
-//            @Override
-//            public void onToolbarHeadingButtonClicked() {
-//
-//            }
-//
-//            @Override
-//            public void onToolbarHtmlButtonClicked() {
-//
-//            }
-//
-//            @Override
-//            public void onToolbarListButtonClicked() {
-//
-//            }
-//
-//            @Override
-//            public boolean onToolbarMediaButtonClicked() {
-//                return false;
-//            }
-//        });
         binding.atToolbar.setEditor(binding.atNoteContent, null);
         binding.atNoteContent.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_edittext));
         binding.atToolbar.enableMediaMode(false);
@@ -272,6 +238,28 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
                     });
                     notesViewModel = null;
                 }
+                break;
+            case R.id.ib_rteditor:
+                if(binding.atToolbar.getVisibility() == View.GONE) {
+                    binding.ibRteditor.setColorFilter(ContextCompat.getColor(context, R.color.contrastPrimary));
+                    binding.atToolbar.setAlpha(0.0f);
+                    binding.atToolbar.setVisibility(View.VISIBLE);
+                    // Start the animation
+                    binding.atToolbar.animate()
+                            .setDuration(500)
+                            .alpha(1.0f)
+                            .setListener(null);
+                } else {
+                    binding.ibRteditor.setColorFilter(ContextCompat.getColor(context, R.color.contrastTertiary));
+                    binding.atToolbar.setAlpha(1.0f);
+                    binding.atToolbar.setVisibility(View.GONE);
+                    // Start the animation
+                    binding.atToolbar.animate()
+                            .setDuration(500)
+                            .alpha(0.0f)
+                            .setListener(null);
+                }
+
                 break;
         }
     }
