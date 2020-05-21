@@ -33,4 +33,7 @@
     <string name="aztec_name">AztecEditor-Android</string>
     <string name="aztec_developer">by Wordpress-Mobile</string>
     <string name="aztec_description">A reusable native Android rich text editor component.</string>
+
+    <string name="sc_new_note_ll">Create New Note</string>
+    <string name="sc_new_note_sl">New Note</string>
 </resources>

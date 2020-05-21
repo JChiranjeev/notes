@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -111,43 +112,45 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
     }
 
     private void setupAztec() {
-        Aztec.with(binding.atNoteContent, binding.atToolbar, new IAztecToolbarClickListener() {
-            @Override
-            public void onToolbarCollapseButtonClicked() {
-
-            }
-
-            @Override
-            public void onToolbarExpandButtonClicked() {
-
-            }
-
-            @Override
-            public void onToolbarFormatButtonClicked(ITextFormat iTextFormat, boolean b) {
-
-            }
-
-            @Override
-            public void onToolbarHeadingButtonClicked() {
-
-            }
-
-            @Override
-            public void onToolbarHtmlButtonClicked() {
-
-            }
-
-            @Override
-            public void onToolbarListButtonClicked() {
-
-            }
-
-            @Override
-            public boolean onToolbarMediaButtonClicked() {
-                return false;
-            }
-        });
+//        Aztec.with(binding.atNoteContent, binding.atToolbar, new IAztecToolbarClickListener() {
+//            @Override
+//            public void onToolbarCollapseButtonClicked() {
+//
+//            }
+//
+//            @Override
+//            public void onToolbarExpandButtonClicked() {
+//
+//            }
+//
+//            @Override
+//            public void onToolbarFormatButtonClicked(ITextFormat iTextFormat, boolean b) {
+//
+//            }
+//
+//            @Override
+//            public void onToolbarHeadingButtonClicked() {
+//
+//            }
+//
+//            @Override
+//            public void onToolbarHtmlButtonClicked() {
+//
+//            }
+//
+//            @Override
+//            public void onToolbarListButtonClicked() {
+//
+//            }
+//
+//            @Override
+//            public boolean onToolbarMediaButtonClicked() {
+//                return false;
+//            }
+//        });
+        binding.atToolbar.setEditor(binding.atNoteContent, null);
         binding.atNoteContent.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_edittext));
+        binding.atToolbar.enableMediaMode(false);
     }
 
     private void hideOrDisplayActions(Boolean isNewNote, Boolean isContentAvailable) {

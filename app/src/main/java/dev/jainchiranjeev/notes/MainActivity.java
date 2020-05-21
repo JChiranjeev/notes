@@ -18,6 +18,7 @@ import java.util.List;
 
 import dev.jainchiranjeev.notes.databinding.ActivityMainBinding;
 import dev.jainchiranjeev.notes.fragments.FragmentMain;
+import dev.jainchiranjeev.notes.fragments.FragmentNoteEditor;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     FragmentManager manager;
     FragmentTransaction transaction;
     View view;
+    Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,13 +42,26 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setNavigationBarColor(Color.TRANSPARENT);
         getWindow().setBackgroundDrawableResource(R.drawable.background_gradient_main_activity);
 
+        String action = getIntent().getAction();
+        if(action.equals("dev.jainchiranjeev.notes.MainActivity.NewNoteFragment")) {
+            FragmentNoteEditor noteEditor = new FragmentNoteEditor();
+            manager = getSupportFragmentManager();
+            transaction = manager.beginTransaction();
+            bundle = new Bundle();
+            bundle.putBoolean("IsNewNote", true);
+            noteEditor.setArguments(bundle);
+            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            transaction.replace(binding.crflMainActivity.getId(), noteEditor);
+            transaction.commit();
+        } else {
 //        Load Home fragment
-        FragmentMain fragmentMain = new FragmentMain();
-        manager = getSupportFragmentManager();
-        transaction = manager.beginTransaction();
-        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        transaction.replace(binding.crflMainActivity.getId(), fragmentMain);
-        transaction.commit();
+            FragmentMain fragmentMain = new FragmentMain();
+            manager = getSupportFragmentManager();
+            transaction = manager.beginTransaction();
+            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            transaction.replace(binding.crflMainActivity.getId(), fragmentMain);
+            transaction.commit();
+        }
 
     }
 

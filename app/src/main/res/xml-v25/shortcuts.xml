@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:targetApi="25">
+    <shortcut
+        android:shortcutId="new_note"
+        android:enabled="true"
+        android:shortcutShortLabel="@string/sc_new_note_sl"
+        android:shortcutLongLabel="@string/sc_new_note_ll"
+        android:icon="@drawable/ic_new">
+        <intent
+            android:action="dev.jainchiranjeev.notes.MainActivity.NewNoteFragment"
+            android:targetPackage="dev.jainchiranjeev.notes"
+            android:targetClass="dev.jainchiranjeev.notes.MainActivity" />
+        <extra
+            android:name="action"
+            android:value="NewNote" />
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+</shortcuts>

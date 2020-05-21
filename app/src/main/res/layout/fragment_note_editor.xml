@@ -82,31 +82,35 @@
         android:gravity="top|start"
         app:quoteColor="@color/contrastPrimary"
         android:textCursorDrawable="@null"
-        app:layout_constraintTop_toBottomOf="@id/et_note_title"
+        app:layout_constraintTop_toBottomOf="@id/at_toolbar"
         app:layout_constraintBottom_toTopOf="@id/ll_note_editor_actions"
-        android:layout_margin="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="16dp"
         android:padding="16dp"/>
+
+    <org.wordpress.aztec.toolbar.AztecToolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        app:toolbarBorderColor="@color/transparent"
+        app:toolbarBackgroundColor="@color/transparent"
+        app:toolbarIconNormalColor="@color/contrastPrimary"
+        style="@style/AztecToolbarStyle"
+        app:mediaToolbarAvailable="false"
+        android:id="@+id/at_toolbar"
+        android:layout_weight="1"
+        app:layout_constraintBottom_toTopOf="@id/at_note_content"
+        app:layout_constraintTop_toBottomOf="@id/et_note_title"
+        android:layout_margin="8dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:gravity="end"
         android:id="@+id/ll_note_editor_actions"
         app:layout_constraintBottom_toBottomOf="parent">
-
-        <org.wordpress.aztec.toolbar.AztecToolbar
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:animateLayoutChanges="true"
-            app:toolbarBorderColor="@color/transparent"
-            app:toolbarBackgroundColor="@color/transparent"
-            app:toolbarIconNormalColor="@color/contrastPrimary"
-            style="@style/AztecToolbarStyle"
-            app:mediaToolbarAvailable="false"
-            android:id="@+id/at_toolbar"
-            android:layout_weight="1"
-            app:layout_constraintBottom_toTopOf="@id/ll_note_editor_actions"
-            android:layout_margin="8dp"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_save_note"
