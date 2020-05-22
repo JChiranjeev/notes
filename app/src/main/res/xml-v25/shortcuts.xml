@@ -8,7 +8,8 @@
         android:enabled="true"
         android:shortcutShortLabel="@string/sc_new_note_sl"
         android:shortcutLongLabel="@string/sc_new_note_ll"
-        android:icon="@drawable/ic_new">
+        android:shortcutDisabledMessage="@string/sc_new_note_ll"
+        android:icon="@drawable/ic_app_shortcut_new">
         <intent
             android:action="dev.jainchiranjeev.notes.MainActivity.NewNoteFragment"
             android:targetPackage="dev.jainchiranjeev.notes"
