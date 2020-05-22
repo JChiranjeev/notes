@@ -216,7 +216,12 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
                         notesViewModel = ViewModelProviders.of(this).get(NotesViewModel.class);
                         notesViewModel.addNewNote(context, note).observe(this, data -> {
                             Log.i("Note Added", data.toString());
-                            manager.popBackStack();
+                            if(isSharedNote) {
+                                manager.popBackStack();
+                                getActivity().finish();
+                            } else {
+                                manager.popBackStack();
+                            }
                         });
                     } else  {
                         manager.popBackStack();
