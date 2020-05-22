@@ -16,7 +16,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_new_note_toolbar"
-            style="@style/FontSourceSansMedium"
+            style="@style/FontSourceSansSemiBold"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:ellipsize="end"
@@ -56,7 +56,7 @@
 
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/et_note_title"
-        style="@style/FontSourceSansMedium"
+        style="@style/FontSourceSansSemiBold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -100,11 +100,11 @@
         android:layout_height="0dp"
         android:inputType="textMultiLine|textLongMessage|textCapSentences"
         android:id="@+id/at_note_content"
-        app:quoteBackground="@color/md_grey_300"
+        app:quoteBackground="@color/quote"
+        app:quoteColor="@color/quote"
         android:hint="Note Content"
         app:textColor="@color/textColorPrimary"
         android:gravity="top|start"
-        app:quoteColor="@color/contrastPrimary"
         android:textCursorDrawable="@null"
         app:layout_constraintTop_toBottomOf="@id/at_toolbar"
         app:layout_constraintBottom_toTopOf="@id/ll_note_editor_actions"
@@ -118,6 +118,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:id="@+id/ll_note_editor_actions"
+        android:clipChildren="false"
+        android:clipToPadding="false"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout

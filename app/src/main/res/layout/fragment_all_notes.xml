@@ -3,6 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false"
     android:padding="8dp">
 
     <LinearLayout
@@ -11,12 +13,12 @@
         android:layout_height="90dp"
         android:orientation="horizontal"
         android:padding="16dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_notes_toolbar"
-            style="@style/FontSourceSansMedium"
+            style="@style/FontSourceSansSemiBold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
@@ -75,37 +77,39 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-<!--        android:id="@+id/fab_new_note"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginEnd="16dp"-->
-<!--        android:layout_marginBottom="88dp"-->
-<!--        android:backgroundTint="@color/contrastPrimary"-->
-<!--        app:fabSize="normal"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:srcCompat="@drawable/ic_new"-->
-<!--        app:tint="@color/colorPrimary" />-->
+    <!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+    <!--        android:id="@+id/fab_new_note"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginEnd="16dp"-->
+    <!--        android:layout_marginBottom="88dp"-->
+    <!--        android:backgroundTint="@color/contrastPrimary"-->
+    <!--        app:fabSize="normal"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:srcCompat="@drawable/ic_new"-->
+    <!--        app:tint="@color/colorPrimary" />-->
 
     <LinearLayout
+        android:id="@+id/ll_all_notes_actions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/ll_all_notes_actions"
         android:layout_margin="8dp"
-        android:visibility="gone"
         android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:clipToPadding="false"
+        android:clipChildren="false"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:orientation="vertical">
+        app:layout_constraintEnd_toEndOf="parent">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_archive_notes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/contrastPrimary"
-            app:fabSize="mini"
             android:layout_margin="8dp"
+            app:backgroundTint="@color/contrastPrimary"
+            app:fabSize="mini"
             app:layout_constraintBottom_toTopOf="@id/fab_delete_notes"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/ic_archive"
@@ -115,9 +119,9 @@
             android:id="@+id/fab_delete_notes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/contrastPrimary"
-            app:fabSize="normal"
             android:layout_margin="8dp"
+            app:backgroundTint="@color/contrastPrimary"
+            app:fabSize="normal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/ic_delete"
@@ -125,17 +129,17 @@
 
     </LinearLayout>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_new_note"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:backgroundTint="@color/contrastPrimary"
-            android:visibility="gone"
-            app:fabSize="normal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_new"
-            app:tint="@color/colorPrimary" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_new_note"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:visibility="gone"
+        app:backgroundTint="@color/contrastPrimary"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_new"
+        app:tint="@color/colorPrimary" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

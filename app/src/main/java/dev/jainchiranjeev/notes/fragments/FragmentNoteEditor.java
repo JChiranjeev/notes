@@ -37,6 +37,7 @@ import dev.jainchiranjeev.notes.R;
 import dev.jainchiranjeev.notes.databinding.FragmentNoteEditorBinding;
 import dev.jainchiranjeev.notes.models.NoteModel;
 import dev.jainchiranjeev.notes.viewmodels.NotesViewModel;
+import uk.co.deanwild.materialshowcaseview.IShowcaseListener;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 
 public class FragmentNoteEditor extends Fragment implements View.OnClickListener {
@@ -53,6 +54,7 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
     Boolean isContentAvailable = false;
     Boolean isSharedNote  = false;
     String sharedContent = "";
+    Boolean isArchived = false;
 
     @Nullable
     @Override
@@ -82,14 +84,30 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
         }
 
         new MaterialShowcaseView.Builder(getActivity())
-                .setTarget(binding.atToolbar)
+                .setTarget(binding.ibRteditor)
                 .setDismissText("Got It!")
-                .setContentText("Select the styling you want to apply to your text.")
+                .setTitleText("More Editing")
+                .setContentText("Click this button to reveal more editing options.")
                 .setDelay(500)
-                .singleUse("RichTextEditing")
-                .show();
+                .singleUse("FormattingButton")
+                .show().addShowcaseListener(new IShowcaseListener() {
+            @Override
+            public void onShowcaseDisplayed(MaterialShowcaseView showcaseView) {
 
-        hideOrDisplayActions(isNewNote, isContentAvailable);
+            }
+
+            @Override
+            public void onShowcaseDismissed(MaterialShowcaseView showcaseView) {
+                new MaterialShowcaseView.Builder(getActivity())
+                        .setTarget(binding.ibShareNote)
+                        .setDismissText("Got It!")
+                        .setTitleText("Share")
+                        .setContentText("Share this note to other apps")
+                        .setDelay(500)
+                        .singleUse("SharingButton")
+                        .show();
+            }
+        });
 
         binding.atNoteContent.addTextChangedListener(new TextWatcher() {
             @Override
@@ -133,12 +151,20 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
             binding.ibDeleteButton.setVisibility(View.VISIBLE);
             binding.ibArchiveButton.setVisibility(View.VISIBLE);
             Glide.with(view).load(R.drawable.ic_delete).fitCenter().into(binding.ibDeleteButton);
-            Glide.with(view).load(R.drawable.ic_archive).fitCenter().into(binding.ibArchiveButton);
+            if(isArchived) {
+                Glide.with(view).load(R.drawable.ic_unarchive).fitCenter().into(binding.ibArchiveButton);
+            } else {
+                Glide.with(view).load(R.drawable.ic_archive).fitCenter().into(binding.ibArchiveButton);
+            }
         } else if (isNewNote && isContentAvailable) {
             binding.ibDeleteButton.setVisibility(View.VISIBLE);
             binding.ibArchiveButton.setVisibility(View.VISIBLE);
             Glide.with(view).load(R.drawable.ic_delete).fitCenter().into(binding.ibDeleteButton);
-            Glide.with(view).load(R.drawable.ic_archive).fitCenter().into(binding.ibArchiveButton);
+            if(isArchived) {
+                Glide.with(view).load(R.drawable.ic_unarchive).fitCenter().into(binding.ibArchiveButton);
+            } else {
+                Glide.with(view).load(R.drawable.ic_archive).fitCenter().into(binding.ibArchiveButton);
+            }
         } else {
             binding.ibDeleteButton.setVisibility(View.GONE);
             binding.ibArchiveButton.setVisibility(View.GONE);
@@ -161,8 +187,10 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
             notesViewModel = ViewModelProviders.of(this).get(NotesViewModel.class);
             notesViewModel.getNoteById(context, noteId).observe(this, data -> {
                 note = data;
+                isArchived = note.isArchived();
                 binding.etNoteTitle.setText(data.getNoteTitle());
                 binding.atNoteContent.fromHtml(data.getNoteContent(), true);
+                hideOrDisplayActions(isNewNote, isContentAvailable);
             });
         }
     }
@@ -183,7 +211,7 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
                     note.setCreationDate(Calendar.getInstance().getTimeInMillis());
                     note.setModificationDate(Calendar.getInstance().getTimeInMillis());
                     note.setPasswordProtected(false);
-                    note.setArchived(false);
+                    note.setArchived(isArchived);
                     if(!note.getNoteContent().equals(null) && note.getNoteContent().length() > 0) {
                         notesViewModel = ViewModelProviders.of(this).get(NotesViewModel.class);
                         notesViewModel.addNewNote(context, note).observe(this, data -> {
@@ -202,7 +230,7 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
                     note.setColor(null);
                     note.setModificationDate(Calendar.getInstance().getTimeInMillis());
                     note.setPasswordProtected(false);
-                    note.setArchived(false);
+                    note.setArchived(note.isArchived());
                     notesViewModel = ViewModelProviders.of(this).get(NotesViewModel.class);
                     notesViewModel.updateNote(context, note).observe(this, data -> {
                         Log.i("Note Updated",data.toString());
@@ -230,7 +258,7 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
                     note.setColor(null);
                     note.setModificationDate(Calendar.getInstance().getTimeInMillis());
                     note.setPasswordProtected(false);
-                    note.setArchived(true);
+                    note.setArchived(!note.isArchived());
                     notesViewModel = ViewModelProviders.of(this).get(NotesViewModel.class);
                     notesViewModel.updateNote(context, note).observe(this, data -> {
                         Log.i("Note Updated",data.toString());
@@ -243,7 +271,7 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
                     note.setColor(null);
                     note.setModificationDate(Calendar.getInstance().getTimeInMillis());
                     note.setPasswordProtected(false);
-                    note.setArchived(true);
+                    note.setArchived(!isArchived);
                     notesViewModel = ViewModelProviders.of(this).get(NotesViewModel.class);
                     notesViewModel.addNewNote(context, note).observe(this, data -> {
                         Log.i("Note Updated",data.toString());
