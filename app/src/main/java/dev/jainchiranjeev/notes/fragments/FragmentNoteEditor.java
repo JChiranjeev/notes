@@ -302,15 +302,19 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
                 }
                 break;
             case R.id.ib_share_note:
-                Intent shareIntent = new Intent(Intent.ACTION_SEND);
                 String title = binding.etNoteTitle.getText().toString();
                 String content = HtmlCompat.fromHtml(binding.atNoteContent.toHtml(true), HtmlCompat.FROM_HTML_MODE_COMPACT).toString();
-                String shareBody = title + "\n\n" + content;
-                Log.i("Share Body", shareBody);
-                shareIntent.setType("text/plain");
-                shareIntent.putExtra(Intent.EXTRA_SUBJECT, title);
-                shareIntent.putExtra(Intent.EXTRA_TEXT, content);
-                startActivity(Intent.createChooser(shareIntent,"Share note using..."));
+                if(content.isEmpty() || content.trim().length() == 0) {
+                    Toast.makeText(context, "Cannot share empty note", Toast.LENGTH_SHORT).show();
+                } else {
+                    String shareBody = title + "\n\n" + content;
+                    Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                    Log.i("Share Body", shareBody);
+                    shareIntent.setType("text/plain");
+                    shareIntent.putExtra(Intent.EXTRA_SUBJECT, title);
+                    shareIntent.putExtra(Intent.EXTRA_TEXT, content);
+                    startActivity(Intent.createChooser(shareIntent,"Share note using..."));
+                }
                 break;
         }
     }
