@@ -122,7 +122,7 @@
         android:visibility="gone"
         android:clipToPadding="false"
         android:clipChildren="false"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/cl_all_notes_snackbar"
         app:layout_constraintEnd_toEndOf="parent">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -162,9 +162,15 @@
         android:visibility="gone"
         app:backgroundTint="@color/contrastPrimary"
         app:fabSize="normal"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/cl_all_notes_snackbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_new"
         app:tint="@color/colorPrimary" />
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/cl_all_notes_snackbar"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

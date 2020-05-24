@@ -1,6 +1,7 @@
 package dev.jainchiranjeev.notes.fragments;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.transition.TransitionInflater;
 import android.util.Log;
@@ -16,13 +17,19 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
@@ -57,11 +64,12 @@ public class FragmentAllNotes extends Fragment implements View.OnClickListener, 
         context = getContext();
 
         new MaterialShowcaseView.Builder(getActivity())
-                .setTarget(binding.tvNotesToolbar)
+                .setTarget(binding.ibOptions)
                 .setDismissText("Got It!")
-                .setContentText("Long Press to switch between Notes/Archives")
+                .setTitleText("Archives")
+                .setContentText("Archives have moved here for easy access.")
                 .setDelay(500)
-                .singleUse("NotesArchivesIntro")
+                .singleUse("ArchivesIntro")
                 .show();
 
         notesViewModel = ViewModelProviders.of(this).get(NotesViewModel.class);
@@ -129,12 +137,37 @@ public class FragmentAllNotes extends Fragment implements View.OnClickListener, 
                 break;
             case R.id.fab_delete_notes:
                 if (notesAdapter != null) {
-                    List<NoteModel> selectedNotes = notesAdapter.getSelected();
-                    notesViewModel = ViewModelProviders.of(this).get(NotesViewModel.class);
-                    notesViewModel.deleteMultipleNotes(context, selectedNotes).observe(this, data -> {
-                        Log.i("Multiple Notes Deleted", data.toString());
-                        loadNotes(context, notesViewModel);
-                    });
+                    new MaterialDialog.Builder(context)
+                            .title("Delete?")
+                            .content("Are you sure to delete selected notes?")
+                            .positiveText("Delete Notes")
+                            .positiveColor(ContextCompat.getColor(context, R.color.md_red_500))
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    List<NoteModel> selectedNotes = notesAdapter.getSelected();
+                                    notesViewModel = ViewModelProviders.of(getActivity()).get(NotesViewModel.class);
+                                    notesViewModel.deleteMultipleNotes(context, selectedNotes).observe(getActivity(), data -> {
+                                        Snackbar snackbar = Snackbar.make(binding.clAllNotesSnackbar, "Notes deleted", Snackbar.LENGTH_SHORT);
+                                        snackbar.setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
+                                        snackbar.getView().setBackgroundColor(ContextCompat.getColor(context, R.color.contrastPrimary));
+                                        snackbar.show();
+                                        loadNotes(context, notesViewModel);
+                                    });
+                                }
+                            })
+                            .negativeText("Cancel Delete")
+                            .negativeColor(ContextCompat.getColor(context, R.color.contrastPrimary))
+                            .onNegative(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+//                                    Snackbar snackbar = Snackbar.make(binding.clAllNotesSnackbar, "Notes not deleted", Snackbar.LENGTH_SHORT);
+//                                    snackbar.setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
+//                                    snackbar.getView().setBackgroundColor(ContextCompat.getColor(context, R.color.contrastPrimary));
+//                                    snackbar.show();
+                                }
+                            })
+                            .show();
                 }
                 break;
             case R.id.fab_archive_notes:
@@ -142,7 +175,22 @@ public class FragmentAllNotes extends Fragment implements View.OnClickListener, 
                     List<NoteModel> selectedNotes = notesAdapter.getSelected();
                     notesViewModel = ViewModelProviders.of(this).get(NotesViewModel.class);
                     notesViewModel.archiveMultipleNotes(context, selectedNotes, !isArchivesView).observe(this, data -> {
-                        Log.i("Notes Unarchived", data.toString());
+                        Snackbar snackbar = Snackbar.make(binding.clAllNotesSnackbar, "Selected Notes Archived", Snackbar.LENGTH_SHORT);
+                        snackbar.setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
+                        snackbar.setAction("View", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                manager = getFragmentManager();
+                                FragmentArchivedNotes fragmentArchivedNotes = new FragmentArchivedNotes();
+                                transaction = manager.beginTransaction();
+                                transaction.replace(R.id.crfl_main_activity, fragmentArchivedNotes);
+                                transaction.addToBackStack(null);
+                                transaction.commit();
+                            }
+                        });
+                        snackbar.setActionTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
+                        snackbar.getView().setBackgroundColor(ContextCompat.getColor(context, R.color.contrastPrimary));
+                        snackbar.show();
                         loadNotes(context, notesViewModel);
                     });
                 }

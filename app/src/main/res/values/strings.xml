@@ -13,6 +13,8 @@
     <string name="url_msv_website">http://www.deanwild.co.uk/</string>
     <string name="url_aztec_github">https://github.com/wordpress-mobile/AztecEditor-Android</string>
     <string name="url_aztec_website">https://make.wordpress.org/mobile/</string>
+    <string name="url_material_dialogs_github">https://github.com/afollestad/material-dialogs</string>
+    <string name="url_material_dialogs_website">https://af.codes/</string>
 
     <string name="cr_app_icon"></string>
     <string name="app_designed_and_developed_by">App Designed and Developed by</string>
@@ -37,4 +39,7 @@
     <string name="sc_new_note_ll">Create New Note</string>
     <string name="sc_new_note_sl">New Note</string>
     <string name="archives">Archives</string>
+    <string name="material_dialogs_name">Material Dialogs</string>
+    <string name="material_dialogs_developer">Aidan Follestad</string>
+    <string name="material_dialogs_desc"><![CDATA[😍 A beautiful, fluid, and extensible dialogs API for Kotlin & Android.]]></string>
 </resources>
