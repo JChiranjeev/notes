@@ -9,24 +9,46 @@
 
     <LinearLayout
         android:id="@+id/ll_toolbar"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="90dp"
         android:orientation="horizontal"
-        android:padding="16dp"
+        android:gravity="center_vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tv_notes_toolbar"
-            style="@style/FontSourceSansSemiBold"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="0dp"
+            android:padding="16dp"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:padding="8dp"
-            android:text="@string/notes"
-            android:textSize="32sp"
-            app:autoSizeTextType="uniform" />
+            android:orientation="horizontal"
+            android:layout_weight="1">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_notes_toolbar"
+                style="@style/FontSourceSansSemiBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:padding="8dp"
+                android:text="@string/notes"
+                android:textSize="32sp"
+                app:autoSizeTextType="uniform" />
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_margin="8dp"
+            android:tooltipText="More Options"
+            android:padding="4dp"
+            android:tint="@color/contrastPrimary"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_options"
+            android:id="@+id/ib_options"
+            android:scaleType="fitCenter"
+            android:background="@color/transparent"/>
 
     </LinearLayout>
 
@@ -62,7 +84,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="16dp"
-            android:text="404. No Notes Found."
+            android:text="404. No Notes Found.\nTry creating one..."
             android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@id/iv_no_notes_found"
             app:layout_constraintTop_toTopOf="parent"
@@ -110,6 +132,7 @@
             android:layout_margin="8dp"
             app:backgroundTint="@color/contrastPrimary"
             app:fabSize="mini"
+            android:tooltipText="Send selected notes to archives"
             app:layout_constraintBottom_toTopOf="@id/fab_delete_notes"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/ic_archive"
@@ -122,6 +145,7 @@
             android:layout_margin="8dp"
             app:backgroundTint="@color/contrastPrimary"
             app:fabSize="normal"
+            android:tooltipText="Delete selected notes"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/ic_delete"
@@ -134,6 +158,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
+        android:tooltipText="Create new note"
         android:visibility="gone"
         app:backgroundTint="@color/contrastPrimary"
         app:fabSize="normal"

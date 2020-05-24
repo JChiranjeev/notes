@@ -1,24 +1,16 @@
 package dev.jainchiranjeev.notes;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
-
-import com.google.android.material.snackbar.Snackbar;
-
-import java.util.List;
 
 import dev.jainchiranjeev.notes.databinding.ActivityMainBinding;
-import dev.jainchiranjeev.notes.fragments.FragmentMain;
+import dev.jainchiranjeev.notes.fragments.FragmentAllNotes;
 import dev.jainchiranjeev.notes.fragments.FragmentNoteEditor;
 
 public class MainActivity extends AppCompatActivity {
@@ -72,11 +64,11 @@ public class MainActivity extends AppCompatActivity {
             }
         } else {
 //        Load Home fragment
-            FragmentMain fragmentMain = new FragmentMain();
+            FragmentAllNotes fragmentAllNotes = new FragmentAllNotes();
             manager = getSupportFragmentManager();
             transaction = manager.beginTransaction();
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            transaction.replace(binding.crflMainActivity.getId(), fragmentMain);
+            transaction.replace(binding.crflMainActivity.getId(), fragmentAllNotes);
             transaction.commit();
         }
 

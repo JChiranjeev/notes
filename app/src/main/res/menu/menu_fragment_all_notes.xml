@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu_archive_button"
+        android:title="Archives"
+        android:icon="@drawable/ic_archive"
+        android:iconTint="@color/contrastPrimary"/>
+
+    <item android:id="@+id/menu_about_button"
+        android:title="About"
+        android:icon="@drawable/ic_about"
+        android:iconTint="@color/contrastPrimary"/>
+</menu>

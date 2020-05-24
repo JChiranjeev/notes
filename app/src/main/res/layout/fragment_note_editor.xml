@@ -37,6 +37,7 @@
             android:scaleType="fitCenter"
             android:background="@color/transparent"
             android:padding="12dp"
+            android:tooltipText="Delete this note"
             android:layout_gravity="center_vertical"
             android:tint="@color/contrastPrimary"
             app:layout_constraintDimensionRatio="1"/>
@@ -46,6 +47,7 @@
             android:layout_width="48dp"
             android:layout_height="match_parent"
             android:scaleType="fitCenter"
+            android:tooltipText="Archive this note"
             android:background="@color/transparent"
             android:padding="12dp"
             android:layout_gravity="center_vertical"
@@ -136,6 +138,7 @@
                 android:layout_margin="4dp"
                 android:background="@color/transparent"
                 android:padding="12dp"
+                android:tooltipText="Enable text formatting"
                 android:tint="@color/contrastTertiary"
                 android:id="@+id/ib_rteditor"
                 android:scaleType="fitCenter"/>
@@ -146,6 +149,7 @@
                 android:layout_margin="4dp"
                 android:background="@color/transparent"
                 android:padding="12dp"
+                android:tooltipText="Share note to other apps."
                 android:tint="@color/contrastTertiary"
                 android:id="@+id/ib_share_note"
                 android:scaleType="fitCenter"/>
@@ -156,7 +160,7 @@
             android:id="@+id/fab_save_note"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:tooltipText="Save Button"
+            android:tooltipText="Save Note"
             app:backgroundTint="@color/contrastPrimary"
             android:layout_gravity="center_vertical"
             app:fabSize="normal"

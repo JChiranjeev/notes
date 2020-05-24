@@ -3,8 +3,8 @@
     <color name="colorPrimary">#FFFFFF</color>
     <color name="colorPrimaryDark">#EFEFEF</color>
     <color name="colorAccent">@color/md_blue_200</color>
-    <color name="gradientStart">#E6EBF3</color>
-    <color name="gradientEnd">#c3cfe2</color>
+    <color name="gradientStart">#f2f5f9</color>
+    <color name="gradientEnd">#ebeff5</color>
     <color name="edittext">#50FFFFFF</color>
     <color name="quote">#FFFFFF</color>
     <color name="note_preview">#FFFFFF</color>
