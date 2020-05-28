@@ -29,13 +29,4 @@
         <item name="fontFamily">@font/sourcesanspro_semibold</item>
     </style>
 
-    <style name="AztecToolbarStyle">
-        <item name="advanced">false</item>
-        <item name="toolbarBorderColor">@color/transparent</item>
-        <item name="backgroundColor">@color/transparent</item>
-        <item name="toolbarIconNormalColor">@color/contrastTertiary</item>
-        <item name="toolbarIconHighlightColor">@color/contrastPrimary</item>
-        <item name="toolbarIconDisabledColor">@color/grey_lighten_20</item>
-    </style>
-
 </resources>

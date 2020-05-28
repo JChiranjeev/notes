@@ -27,10 +27,6 @@ import androidx.loader.app.LoaderManager;
 
 import com.bumptech.glide.Glide;
 
-import org.wordpress.aztec.Aztec;
-import org.wordpress.aztec.ITextFormat;
-import org.wordpress.aztec.toolbar.IAztecToolbarClickListener;
-
 import java.util.Calendar;
 
 import dev.jainchiranjeev.notes.R;
@@ -66,7 +62,6 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
 
 //        Set Icons
         Glide.with(view).load(R.drawable.ic_done).fitCenter().into(binding.fabSaveNote);
-        Glide.with(view).load(R.drawable.ic_formatting).into(binding.ibRteditor);
         Glide.with(view).load(R.drawable.ic_share).into(binding.ibShareNote);
 
         bundle = this.getArguments();
@@ -77,37 +72,19 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
             if(isSharedNote) {
                 sharedContent = bundle.getString("SharedContent");
             }
-            setupAztec();
             loadNote(noteId);
         } else {
             manager.popBackStack();
         }
 
         new MaterialShowcaseView.Builder(getActivity())
-                .setTarget(binding.ibRteditor)
+                .setTarget(binding.ibShareNote)
                 .setDismissText("Got It!")
-                .setTitleText("More Editing")
-                .setContentText("Click this button to reveal more editing options.")
+                .setTitleText("Share")
+                .setContentText("Share this note to other apps")
                 .setDelay(500)
-                .singleUse("FormattingButton")
-                .show().addShowcaseListener(new IShowcaseListener() {
-            @Override
-            public void onShowcaseDisplayed(MaterialShowcaseView showcaseView) {
-
-            }
-
-            @Override
-            public void onShowcaseDismissed(MaterialShowcaseView showcaseView) {
-                new MaterialShowcaseView.Builder(getActivity())
-                        .setTarget(binding.ibShareNote)
-                        .setDismissText("Got It!")
-                        .setTitleText("Share")
-                        .setContentText("Share this note to other apps")
-                        .setDelay(500)
-                        .singleUse("SharingButton")
-                        .show();
-            }
-        });
+                .singleUse("SharingButton")
+                .show();
 
         binding.atNoteContent.addTextChangedListener(new TextWatcher() {
             @Override
@@ -134,16 +111,9 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
         binding.fabSaveNote.setOnClickListener(this);
         binding.ibDeleteButton.setOnClickListener(this);
         binding.ibArchiveButton.setOnClickListener(this);
-        binding.ibRteditor.setOnClickListener(this);
         binding.ibShareNote.setOnClickListener(this);
 
         return view;
-    }
-
-    private void setupAztec() {
-        binding.atToolbar.setEditor(binding.atNoteContent, null);
-        binding.atNoteContent.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_edittext));
-        binding.atToolbar.enableMediaMode(false);
     }
 
     private void hideOrDisplayActions(Boolean isNewNote, Boolean isContentAvailable) {
@@ -189,7 +159,7 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
                 note = data;
                 isArchived = note.isArchived();
                 binding.etNoteTitle.setText(data.getNoteTitle());
-                binding.atNoteContent.fromHtml(data.getNoteContent(), true);
+                binding.atNoteContent.setText(data.getNoteContent());
                 hideOrDisplayActions(isNewNote, isContentAvailable);
             });
         }
@@ -206,7 +176,7 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
                     } else {
                         note.setNoteTitle(binding.etNoteTitle.getText().toString());
                     }
-                    note.setNoteContent(binding.atNoteContent.toHtml(false));
+                    note.setNoteContent(binding.atNoteContent.getText().toString());
                     note.setColor(null);
                     note.setCreationDate(Calendar.getInstance().getTimeInMillis());
                     note.setModificationDate(Calendar.getInstance().getTimeInMillis());
@@ -230,8 +200,7 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
                     break;
                 } else {
                     note.setNoteTitle(binding.etNoteTitle.getText().toString());
-                    note.setNoteContent(binding.atNoteContent.toHtml(true));
-                    Log.i("Content", binding.atNoteContent.toHtml(true));
+                    note.setNoteContent(binding.atNoteContent.getText().toString());
                     note.setColor(null);
                     note.setModificationDate(Calendar.getInstance().getTimeInMillis());
                     note.setPasswordProtected(false);
@@ -259,7 +228,7 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
             case R.id.ib_archive_button:
                 if(!isNewNote) {
                     note.setNoteTitle(binding.etNoteTitle.getText().toString());
-                    note.setNoteContent(binding.atNoteContent.toHtml(true));
+                    note.setNoteContent(binding.atNoteContent.getText().toString());
                     note.setColor(null);
                     note.setModificationDate(Calendar.getInstance().getTimeInMillis());
                     note.setPasswordProtected(false);
@@ -272,7 +241,7 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
                     notesViewModel = null;
                 } else {
                     note.setNoteTitle(binding.etNoteTitle.getText().toString());
-                    note.setNoteContent(binding.atNoteContent.toHtml(true));
+                    note.setNoteContent(binding.atNoteContent.getText().toString());
                     note.setColor(null);
                     note.setModificationDate(Calendar.getInstance().getTimeInMillis());
                     note.setPasswordProtected(false);
@@ -285,30 +254,9 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
                     notesViewModel = null;
                 }
                 break;
-            case R.id.ib_rteditor:
-                if(binding.atToolbar.getVisibility() == View.GONE) {
-                    binding.ibRteditor.setColorFilter(ContextCompat.getColor(context, R.color.contrastPrimary));
-                    binding.atToolbar.setAlpha(0.0f);
-                    binding.atToolbar.setVisibility(View.VISIBLE);
-                    // Start the animation
-                    binding.atToolbar.animate()
-                            .setDuration(500)
-                            .alpha(1.0f)
-                            .setListener(null);
-                } else {
-                    binding.ibRteditor.setColorFilter(ContextCompat.getColor(context, R.color.contrastTertiary));
-                    binding.atToolbar.setAlpha(1.0f);
-                    binding.atToolbar.setVisibility(View.GONE);
-                    // Start the animation
-                    binding.atToolbar.animate()
-                            .setDuration(500)
-                            .alpha(0.0f)
-                            .setListener(null);
-                }
-                break;
             case R.id.ib_share_note:
                 String title = binding.etNoteTitle.getText().toString();
-                String content = HtmlCompat.fromHtml(binding.atNoteContent.toHtml(true), HtmlCompat.FROM_HTML_MODE_COMPACT).toString();
+                String content = binding.atNoteContent.getText().toString();
                 if(content.isEmpty() || content.trim().length() == 0) {
                     Toast.makeText(context, "Cannot share empty note", Toast.LENGTH_SHORT).show();
                 } else {

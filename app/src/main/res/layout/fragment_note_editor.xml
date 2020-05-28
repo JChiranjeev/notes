@@ -80,35 +80,17 @@
         android:id="@+id/empty_view"
         app:layout_constraintTop_toBottomOf="@id/et_note_title"/>
 
-    <org.wordpress.aztec.toolbar.AztecToolbar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:animateLayoutChanges="true"
-        app:toolbarBorderColor="@color/transparent"
-        app:toolbarBackgroundColor="@color/transparent"
-        app:toolbarIconNormalColor="@color/contrastPrimary"
-        style="@style/AztecToolbarStyle"
-        app:mediaToolbarAvailable="false"
-        android:id="@+id/at_toolbar"
-        android:layout_weight="1"
-        android:visibility="gone"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintBottom_toTopOf="@id/at_note_content"
-        app:layout_constraintTop_toBottomOf="@id/empty_view"/>
-
-    <org.wordpress.aztec.AztecText
+    <androidx.appcompat.widget.AppCompatEditText
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:inputType="textMultiLine|textLongMessage|textCapSentences"
         android:id="@+id/at_note_content"
-        app:quoteBackground="@color/quote"
-        app:quoteColor="@color/quote"
+        android:background="@drawable/bg_edittext"
         android:hint="Note Content"
-        app:textColor="@color/textColorPrimary"
+        android:textColor="@color/textColorPrimary"
         android:gravity="top|start"
         android:textCursorDrawable="@null"
-        app:layout_constraintTop_toBottomOf="@id/at_toolbar"
+        app:layout_constraintTop_toBottomOf="@id/empty_view"
         app:layout_constraintBottom_toTopOf="@id/ll_note_editor_actions"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
@@ -131,17 +113,6 @@
             android:gravity="center_vertical"
             android:id="@+id/ll_note_editor_toolbar"
             android:orientation="horizontal">
-
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_margin="4dp"
-                android:background="@color/transparent"
-                android:padding="12dp"
-                android:tooltipText="Enable text formatting"
-                android:tint="@color/contrastTertiary"
-                android:id="@+id/ib_rteditor"
-                android:scaleType="fitCenter"/>
 
             <androidx.appcompat.widget.AppCompatImageButton
                 android:layout_width="48dp"
