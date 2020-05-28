@@ -26,7 +26,7 @@ public abstract class NotesDB extends RoomDatabase {
             database.execSQL("ALTER TABLE table_notes ADD COLUMN 'todoList' TEXT");
             database.execSQL("ALTER TABLE table_notes ADD COLUMN 'isTodoList' INTEGER NOT NULL DEFAULT 'false'");
             database.execSQL("ALTER TABLE table_notes ADD COLUMN 'reminderDateTime' INTEGER NOT NULL DEFAULT 0");
-            database.execSQL("ALTER TABLE table_notes ADD COLUMN 'isReminder' INTEGER NOT NULL DEFAULT 0");
+            database.execSQL("ALTER TABLE table_notes ADD COLUMN 'isReminder' INTEGER NOT NULL DEFAULT 'false'");
         }
     };
 
