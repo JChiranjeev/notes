@@ -5,9 +5,13 @@ import android.text.SpannableString;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
+
+import dev.jainchiranjeev.notes.utils.TodoConverters;
 
 @Entity(tableName = "table_notes")
 public class NoteModel implements Serializable {
@@ -19,6 +23,10 @@ public class NoteModel implements Serializable {
     private boolean isPasswordProtected;
     private boolean isChecked = false;
     private boolean isArchived = false;
+    @TypeConverters(TodoConverters.class)
+    private List<ToDoModel> todoList;
+    private boolean isTodoList = false;
+    private long reminderDateTime;
 
     @Ignore
     public NoteModel() {
@@ -104,5 +112,29 @@ public class NoteModel implements Serializable {
 
     public void setPasswordProtected(boolean passwordProtected) {
         isPasswordProtected = passwordProtected;
+    }
+
+    public List<ToDoModel> getTodoList() {
+        return todoList;
+    }
+
+    public void setTodoList(List<ToDoModel> todoList) {
+        this.todoList = todoList;
+    }
+
+    public boolean isTodoList() {
+        return isTodoList;
+    }
+
+    public void setTodoList(boolean todoList) {
+        isTodoList = todoList;
+    }
+
+    public long getReminderDateTime() {
+        return reminderDateTime;
+    }
+
+    public void setReminderDateTime(long reminderDateTime) {
+        this.reminderDateTime = reminderDateTime;
     }
 }
