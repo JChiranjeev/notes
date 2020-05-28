@@ -23,9 +23,10 @@ public abstract class NotesDB extends RoomDatabase {
     static final Migration MIGRATION_1_2 = new Migration(1,2) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
-            database.execSQL("ALTER TABLE table_notes ADD COLUMN todoList TEXT");
-            database.execSQL("ALTER TABLE table_notes ADD COLUMN isTodoList INTEGER");
-            database.execSQL("ALTER TABLE table_notes ADD COLUMN reminderDateTime INTEGER");
+            database.execSQL("ALTER TABLE table_notes ADD COLUMN 'todoList' TEXT");
+            database.execSQL("ALTER TABLE table_notes ADD COLUMN 'isTodoList' INTEGER NOT NULL DEFAULT 'false'");
+            database.execSQL("ALTER TABLE table_notes ADD COLUMN 'reminderDateTime' INTEGER NOT NULL DEFAULT 0");
+            database.execSQL("ALTER TABLE table_notes ADD COLUMN 'isReminder' INTEGER NOT NULL DEFAULT 0");
         }
     };
 

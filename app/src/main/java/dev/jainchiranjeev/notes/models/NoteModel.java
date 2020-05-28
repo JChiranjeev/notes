@@ -23,10 +23,10 @@ public class NoteModel implements Serializable {
     private boolean isPasswordProtected;
     private boolean isChecked = false;
     private boolean isArchived = false;
+    private boolean isTodoList,isReminder;
+    private long reminderDateTime;
     @TypeConverters(TodoConverters.class)
     private List<ToDoModel> todoList;
-    private boolean isTodoList = false;
-    private long reminderDateTime;
 
     @Ignore
     public NoteModel() {
@@ -136,5 +136,13 @@ public class NoteModel implements Serializable {
 
     public void setReminderDateTime(long reminderDateTime) {
         this.reminderDateTime = reminderDateTime;
+    }
+
+    public boolean isReminder() {
+        return isReminder;
+    }
+
+    public void setReminder(boolean reminder) {
+        isReminder = reminder;
     }
 }
