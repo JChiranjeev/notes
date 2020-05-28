@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:layout_margin="4dp"
+    android:background="@drawable/bg_edittext">
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:padding="8dp"
+        android:id="@+id/ib_checkbox"
+        android:scaleType="fitCenter"
+        android:background="@color/transparent"
+        android:src="@drawable/ic_check_box_unchecked"
+        android:tint="@color/contrastPrimary"/>
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:hint="To Do Item"
+        android:padding="8dp"
+        android:id="@+id/et_todo_item"
+        android:textSize="16sp"
+        android:gravity="center_vertical"
+        android:background="@color/transparent"/>
+
+</LinearLayout>

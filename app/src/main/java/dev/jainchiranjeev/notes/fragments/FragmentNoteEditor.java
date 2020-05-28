@@ -24,14 +24,17 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.loader.app.LoaderManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import dev.jainchiranjeev.notes.R;
 import dev.jainchiranjeev.notes.databinding.FragmentNoteEditorBinding;
 import dev.jainchiranjeev.notes.models.NoteModel;
+import dev.jainchiranjeev.notes.presenter.ToDoAdapter;
 import dev.jainchiranjeev.notes.viewmodels.NotesViewModel;
 import uk.co.deanwild.materialshowcaseview.IShowcaseListener;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
@@ -49,6 +52,7 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
     int noteId = -1;
     Boolean isContentAvailable = false;
     Boolean isSharedNote  = false;
+    Boolean isTodo = false;
     String sharedContent = "";
     Boolean isArchived = false;
 
@@ -63,6 +67,10 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
 //        Set Icons
         Glide.with(view).load(R.drawable.ic_done).fitCenter().into(binding.fabSaveNote);
         Glide.with(view).load(R.drawable.ic_share).into(binding.ibShareNote);
+
+        if(isNewNote) {
+            Glide.with(view).load(R.drawable.ic_check_box_checked).into(binding.ibTodo);
+        }
 
         bundle = this.getArguments();
         if(bundle != null) {
@@ -112,6 +120,7 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
         binding.ibDeleteButton.setOnClickListener(this);
         binding.ibArchiveButton.setOnClickListener(this);
         binding.ibShareNote.setOnClickListener(this);
+        binding.ibTodo.setOnClickListener(this);
 
         return view;
     }
@@ -142,26 +151,46 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
     }
 
     private void loadNote(int noteId) {
-        if (noteId < 0 && isNewNote) {
-            binding.atNoteContent.setTransitionName("transition_note_content-1");
-            isContentAvailable = false;
-            note = new NoteModel();
-            if(isSharedNote && !sharedContent.isEmpty() && sharedContent.length() > 0) {
-                binding.atNoteContent.setText(sharedContent);
-                isContentAvailable = true;
+        if(isTodo) {
+            binding.rvTodo.setVisibility(View.VISIBLE);
+            binding.atNoteContent.setVisibility(View.GONE);
+            if(isNewNote) {
+                loadNote(-1);
+            } else {
+                loadTodo(noteId);
             }
         } else {
-            binding.etNoteTitle.setTransitionName("transition_note_title"+noteId);
-            binding.atNoteContent.setTransitionName("transition_note_content"+noteId);
-            isContentAvailable = true;
-            notesViewModel = ViewModelProviders.of(this).get(NotesViewModel.class);
-            notesViewModel.getNoteById(context, noteId).observe(this, data -> {
-                note = data;
-                isArchived = note.isArchived();
-                binding.etNoteTitle.setText(data.getNoteTitle());
-                binding.atNoteContent.setText(data.getNoteContent());
-                hideOrDisplayActions(isNewNote, isContentAvailable);
-            });
+            binding.rvTodo.setVisibility(View.GONE);
+            binding.atNoteContent.setVisibility(View.VISIBLE);
+            if (noteId < 0 && isNewNote) {
+                binding.atNoteContent.setTransitionName("transition_note_content-1");
+                isContentAvailable = false;
+                note = new NoteModel();
+                if(isSharedNote && !sharedContent.isEmpty() && sharedContent.length() > 0) {
+                    binding.atNoteContent.setText(sharedContent);
+                    isContentAvailable = true;
+                }
+            } else {
+                binding.etNoteTitle.setTransitionName("transition_note_title"+noteId);
+                binding.atNoteContent.setTransitionName("transition_note_content"+noteId);
+                isContentAvailable = true;
+                notesViewModel = ViewModelProviders.of(this).get(NotesViewModel.class);
+                notesViewModel.getNoteById(context, noteId).observe(this, data -> {
+                    note = data;
+                    isArchived = note.isArchived();
+                    binding.etNoteTitle.setText(data.getNoteTitle());
+                    binding.atNoteContent.setText(data.getNoteContent());
+                    hideOrDisplayActions(isNewNote, isContentAvailable);
+                });
+            }
+        }
+    }
+
+    private void loadTodo(int noteId) {
+        if (isNewNote && noteId < 0) {
+
+        } else {
+
         }
     }
 
@@ -268,6 +297,14 @@ public class FragmentNoteEditor extends Fragment implements View.OnClickListener
                     shareIntent.putExtra(Intent.EXTRA_TEXT, content);
                     startActivity(Intent.createChooser(shareIntent,"Share note using..."));
                 }
+                break;
+            case R.id.ib_todo:
+                isTodo = true;
+                binding.atNoteContent.setVisibility(View.GONE);
+                binding.rvTodo.setVisibility(View.VISIBLE);
+                ToDoAdapter adapter = new ToDoAdapter(new ArrayList<>(), context);
+                binding.rvTodo.setAdapter(adapter);
+                binding.rvTodo.setLayoutManager(new LinearLayoutManager(context));
                 break;
         }
     }

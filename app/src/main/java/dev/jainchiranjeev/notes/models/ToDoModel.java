@@ -1,20 +1,20 @@
 package dev.jainchiranjeev.notes.models;
 
 public class ToDoModel {
-    private String toDO;
+    private String todo;
     private boolean isDone = false;
 
-    public ToDoModel(String toDO, boolean isDone) {
-        this.toDO = toDO;
+    public ToDoModel(String todo, boolean isDone) {
+        this.todo = todo;
         this.isDone = isDone;
     }
 
-    public String getToDO() {
-        return toDO;
+    public String getTodo() {
+        return todo;
     }
 
-    public void setToDO(String toDO) {
-        this.toDO = toDO;
+    public void setTodo(String todo) {
+        this.todo = todo;
     }
 
     public boolean isDone() {
