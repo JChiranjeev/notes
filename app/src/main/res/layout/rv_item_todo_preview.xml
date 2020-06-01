@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="20dp"
+    android:layout_margin="1dp"
+    android:clickable="false"
+    android:layout_gravity="start"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <CheckBox
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:buttonTint="@color/contrastTertiary"
+        android:drawablePadding="2dp"
+        android:clickable="false"
+        android:id="@+id/cb_todo_preview"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:text="Todo Content"
+        android:id="@+id/tv_todo_preview"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@id/cb_todo_preview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="8dp"
+        android:gravity="center_vertical"
+        android:lines="1"
+        android:maxLines="1"
+        android:ellipsize="end"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

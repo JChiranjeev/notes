@@ -2,19 +2,17 @@ package dev.jainchiranjeev.notes.presenter;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.text.Html;
 import android.transition.TransitionInflater;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import androidx.core.text.HtmlCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textview.MaterialTextView;
@@ -44,20 +42,33 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
     class ViewHolder extends RecyclerView.ViewHolder {
 
         private MaterialTextView tvNoteTitle, tvNoteContent, tvModifiedDate;
+        private RecyclerView rvTodoPreview;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvNoteTitle = (MaterialTextView) itemView.findViewById(R.id.tv_note_preview_title);
-            tvNoteContent = (MaterialTextView) itemView.findViewById(R.id.tv_note_preview_content);
-            tvModifiedDate = (MaterialTextView) itemView.findViewById(R.id.tv_note_preview_modified);
+            tvNoteTitle = itemView.findViewById(R.id.tv_note_preview_title);
+            tvNoteContent = itemView.findViewById(R.id.tv_note_preview_content);
+            tvModifiedDate = itemView.findViewById(R.id.tv_note_preview_modified);
+            rvTodoPreview = itemView.findViewById(R.id.rv_todo_preview_content);
             manager = ((FragmentActivity) context).getSupportFragmentManager();
         }
 
         void bind(final NoteModel note) {
             tvNoteTitle.setTransitionName("transition_note_title"+note.getNoteId());
-            tvNoteContent.setTransitionName("transition_note_content"+note.getNoteId());
             tvNoteTitle.setText(note.getNoteTitle());
-            tvNoteContent.setText(note.getNoteContent());
+            if(note.isTodoList()) {
+                rvTodoPreview.setVisibility(View.VISIBLE);
+                tvNoteContent.setVisibility(View.GONE);
+                TodoPreviewAdapter adapter = new TodoPreviewAdapter(note.getTodoList(), context);
+                rvTodoPreview.setAdapter(adapter);
+                rvTodoPreview.setLayoutManager(new LinearLayoutManager(context));
+            } else {
+                rvTodoPreview.setVisibility(View.GONE);
+                tvNoteContent.setVisibility(View.VISIBLE);
+                tvNoteContent.setTransitionName("transition_note_content"+note.getNoteId());
+                tvNoteContent.setText(note.getNoteContent());
+            }
+
             Date date = new Date(note.getModificationDate());
             SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy HH:mm");
             tvModifiedDate.setText(formatter.format(date));
@@ -102,7 +113,9 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
                         noteEditor.setSharedElementEnterTransition(TransitionInflater.from(context).inflateTransition(R.transition.transition_basic));
                         noteEditor.setSharedElementReturnTransition(TransitionInflater.from(context).inflateTransition(R.transition.transition_basic));
                         transaction.addSharedElement(tvNoteTitle, "transition_note_title"+note.getNoteId());
-                        transaction.addSharedElement(tvNoteContent, "transition_note_content"+note.getNoteId());
+                        if (!note.isTodoList()) {
+                            transaction.addSharedElement(tvNoteContent, "transition_note_content" + note.getNoteId());
+                        }
                         transaction.replace(R.id.crfl_main_activity, noteEditor);
                         transaction.addToBackStack(null);
                         transaction.commit();

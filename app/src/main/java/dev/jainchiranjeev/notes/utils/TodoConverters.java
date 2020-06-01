@@ -9,11 +9,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import dev.jainchiranjeev.notes.models.ToDoModel;
+import dev.jainchiranjeev.notes.models.TodoModel;
 
 public class TodoConverters {
     @TypeConverter
-    public String listToString(List<ToDoModel>todoList) {
+    public String listToString(List<TodoModel>todoList) {
         String todoJson = null;
         if(todoList == null) {
             return null;
@@ -28,14 +28,14 @@ public class TodoConverters {
     }
 
     @TypeConverter
-    public List<ToDoModel> stringToList(String jsonString) {
-        List<ToDoModel> todoList = new ArrayList<>();
+    public List<TodoModel> stringToList(String jsonString) {
+        List<TodoModel> todoList = new ArrayList<>();
         if(jsonString == null || jsonString.isEmpty()) {
             return null;
         }
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            todoList = Arrays.asList(objectMapper.readValue(jsonString, ToDoModel[].class));
+            todoList = Arrays.asList(objectMapper.readValue(jsonString, TodoModel[].class));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }

@@ -28,11 +28,32 @@
             android:text="Note Content Hello World\nHelloWorld"
             android:padding="4dp"
             android:textSize="14sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/tv_note_preview_modified"
             style="@style/FontSourceSansSemiBold"
             app:lineHeight="20sp"
             android:maxLines="5"
             android:ellipsize="end"
             app:layout_constraintTop_toBottomOf="@id/tv_note_preview_title"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rv_todo_preview_content"
+            android:clickable="false"
+            android:focusable="false"
+            android:padding="2dp"
+            app:layout_constraintBottom_toTopOf="@id/tv_note_preview_modified"
+            app:layout_constraintTop_toBottomOf="@id/tv_note_preview_title"
+            style="@style/FontSourceSansSemiBold"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:translationZ="2dp"
+            android:background="@color/transparent"
+            app:layout_constraintBottom_toBottomOf="@id/rv_todo_preview_content"
+            app:layout_constraintTop_toTopOf="@id/rv_todo_preview_content"/>
 
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="match_parent"
@@ -45,7 +66,7 @@
             android:ellipsize="end"
             android:textSize="12sp"
             android:gravity="end"
-            app:layout_constraintTop_toBottomOf="@id/tv_note_preview_content"/>
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

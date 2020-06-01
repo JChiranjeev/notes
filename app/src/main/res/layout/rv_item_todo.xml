@@ -5,18 +5,18 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:gravity="center_vertical"
-    android:layout_margin="4dp"
+    android:layout_margin="2dp"
     android:background="@drawable/bg_edittext">
 
-    <androidx.appcompat.widget.AppCompatImageButton
+    <androidx.appcompat.widget.AppCompatCheckBox
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:padding="8dp"
-        android:id="@+id/ib_checkbox"
+        android:id="@+id/cb_todo"
+        android:layout_marginStart="8dp"
         android:scaleType="fitCenter"
         android:background="@color/transparent"
         android:src="@drawable/ic_check_box_unchecked"
-        android:tint="@color/contrastPrimary"/>
+        android:tint="@color/contrastTertiary"/>
 
     <androidx.appcompat.widget.AppCompatEditText
         android:layout_width="0dp"
@@ -24,6 +24,10 @@
         android:layout_weight="1"
         android:hint="To Do Item"
         android:padding="8dp"
+        android:maxLines="1"
+        android:lines="1"
+        android:inputType="textCapSentences"
+        android:imeOptions="actionDone"
         android:id="@+id/et_todo_item"
         android:textSize="16sp"
         android:gravity="center_vertical"

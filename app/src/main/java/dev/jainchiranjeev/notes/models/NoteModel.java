@@ -1,14 +1,11 @@
 package dev.jainchiranjeev.notes.models;
 
-import android.text.SpannableString;
-
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import dev.jainchiranjeev.notes.utils.TodoConverters;
@@ -26,7 +23,7 @@ public class NoteModel implements Serializable {
     private boolean isTodoList,isReminder;
     private long reminderDateTime;
     @TypeConverters(TodoConverters.class)
-    private List<ToDoModel> todoList;
+    private List<TodoModel> todoList;
 
     @Ignore
     public NoteModel() {
@@ -114,11 +111,11 @@ public class NoteModel implements Serializable {
         isPasswordProtected = passwordProtected;
     }
 
-    public List<ToDoModel> getTodoList() {
+    public List<TodoModel> getTodoList() {
         return todoList;
     }
 
-    public void setTodoList(List<ToDoModel> todoList) {
+    public void setTodoList(List<TodoModel> todoList) {
         this.todoList = todoList;
     }
 

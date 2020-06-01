@@ -1,10 +1,13 @@
 package dev.jainchiranjeev.notes.models;
 
-public class ToDoModel {
+public class TodoModel {
     private String todo;
     private boolean isDone = false;
 
-    public ToDoModel(String todo, boolean isDone) {
+    public TodoModel() {
+    }
+
+    public TodoModel(String todo, boolean isDone) {
         this.todo = todo;
         this.isDone = isDone;
     }
