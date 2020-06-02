@@ -7,6 +7,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatCheckBox;
@@ -14,6 +15,8 @@ import androidx.appcompat.widget.AppCompatEditText;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import dev.jainchiranjeev.notes.R;
@@ -31,6 +34,7 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.ViewHolder> {
     class ViewHolder extends RecyclerView.ViewHolder {
         AppCompatCheckBox cbTodo;
         AppCompatEditText etTodoItem;
+        TodoModel tempTodo;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -57,7 +61,10 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.ViewHolder> {
 
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    todoList.get(getAdapterPosition()).setTodo(etTodoItem.getText().toString());
+                    tempTodo = todoList.get(getAdapterPosition());
+                    tempTodo.setTodo(etTodoItem.getText().toString());
+                    updateTodo(getAdapterPosition(), tempTodo);
+                    tempTodo = null;
                 }
 
                 @Override
@@ -65,11 +72,31 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.ViewHolder> {
 
                 }
             });
+            cbTodo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    tempTodo = todoList.get(getAdapterPosition());
+                    tempTodo.setDone(b);
+                    updateTodo(getAdapterPosition(), tempTodo);
+                    tempTodo = null;
+                }
+            });
         }
+    }
+
+    private void updateTodo(int position, TodoModel todoItem) {
+        todoList.get(position).setTodo(todoItem.getTodo());
+        todoList.get(position).setDone(todoItem.isDone());
     }
 
     public TodoAdapter(List<TodoModel> todoList, Context context, RecyclerView recyclerView, TodoListener todoListener) {
         this.todoList = new ArrayList<>(todoList);
+        Collections.sort(this.todoList, new Comparator<TodoModel>() {
+            @Override
+            public int compare(TodoModel t0, TodoModel t1) {
+                return t0.isDone().compareTo(t1.isDone());
+            }
+        });
         this.context = context;
         this.recyclerView = recyclerView;
         this.todoListener = todoListener;
@@ -100,16 +127,7 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         todoItem = todoList.get(position);
         holder.etTodoItem.setText(todoItem.getTodo());
-//        if (position == todoList.size()) {
-//            holder.etTodoItem.setFocusableInTouchMode(true);
-//            recyclerView.getLayoutManager().scrollToPosition(position);
-//            holder.etTodoItem.post(new Runnable() {
-//                @Override
-//                public void run() {
-//                    holder.etTodoItem.requestFocus();
-//                }
-//            });
-//        }
+        holder.cbTodo.setChecked(todoItem.isDone());
     }
 
     @Override

@@ -2,7 +2,7 @@ package dev.jainchiranjeev.notes.models;
 
 public class TodoModel {
     private String todo;
-    private boolean isDone = false;
+    private Boolean isDone = false;
 
     public TodoModel() {
     }
@@ -20,11 +20,11 @@ public class TodoModel {
         this.todo = todo;
     }
 
-    public boolean isDone() {
+    public Boolean isDone() {
         return isDone;
     }
 
-    public void setDone(boolean done) {
+    public void setDone(Boolean done) {
         isDone = done;
     }
 }

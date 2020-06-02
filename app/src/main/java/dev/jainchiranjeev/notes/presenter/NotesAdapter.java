@@ -6,6 +6,7 @@ import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -43,6 +44,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
 
         private MaterialTextView tvNoteTitle, tvNoteContent, tvModifiedDate;
         private RecyclerView rvTodoPreview;
+        private View viewRvCover;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -50,6 +52,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
             tvNoteContent = itemView.findViewById(R.id.tv_note_preview_content);
             tvModifiedDate = itemView.findViewById(R.id.tv_note_preview_modified);
             rvTodoPreview = itemView.findViewById(R.id.rv_todo_preview_content);
+            viewRvCover = itemView.findViewById(R.id.view_rv_cover);
             manager = ((FragmentActivity) context).getSupportFragmentManager();
         }
 
@@ -62,6 +65,12 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
                 TodoPreviewAdapter adapter = new TodoPreviewAdapter(note.getTodoList(), context);
                 rvTodoPreview.setAdapter(adapter);
                 rvTodoPreview.setLayoutManager(new LinearLayoutManager(context));
+                viewRvCover.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        itemView.performClick();
+                    }
+                });
             } else {
                 rvTodoPreview.setVisibility(View.GONE);
                 tvNoteContent.setVisibility(View.VISIBLE);
